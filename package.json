@@ -1,0 +1,9 @@
+{
+  "name": "altius-hub",
+  "version": "1.0.0",
+  "description": "Projeto acadêmico simples para cadastro de reservas",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

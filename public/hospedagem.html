@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informações da hospedagem</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Informações da hospedagem</h1>
+    <p>Altius Hub</p>
+  </header>
+
+  <main>
+    <section class="tela" id="conteudo">
+      <p>Carregando informações...</p>
+    </section>
+  </main>
+
+  <script>
+    const parametros = new URLSearchParams(window.location.search);
+    const id = parametros.get('id');
+    const conteudo = document.getElementById('conteudo');
+
+    function formatarData(data) {
+      const partes = data.split('-');
+      return partes[2] + '/' + partes[1] + '/' + partes[0];
+    }
+
+    async function carregarHospedagem() {
+      if (!id) {
+        conteudo.innerHTML = '<p>Reserva não informada.</p>';
+        return;
+      }
+
+      const resposta = await fetch('/api/reservas/' + id);
+
+      if (!resposta.ok) {
+        conteudo.innerHTML = '<p>Reserva não encontrada.</p>';
+        return;
+      }
+
+      const reserva = await resposta.json();
+      const apartamento = reserva.apartamento;
+
+      conteudo.innerHTML = `
+        <h2>${apartamento.empreendimento} - Apartamento ${apartamento.numero}</h2>
+        <p>Hóspede: <strong>${reserva.hospede}</strong></p>
+
+        <div class="informacoes">
+          <p><strong>Check-in:</strong> ${formatarData(reserva.entrada)} às ${apartamento.checkin}</p>
+          <p><strong>Check-out:</strong> ${formatarData(reserva.saida)} até ${apartamento.checkout}</p>
+          <p><strong>Localização:</strong> ${apartamento.localizacao}</p>
+          <p><strong>Wi-Fi:</strong> ${apartamento.wifi}</p>
+          <p><strong>Acesso:</strong> ${apartamento.acesso}</p>
+        </div>
+
+        <p class="aviso">Essa página é um exemplo das informações que podem ser enviadas ao hóspede depois da reserva.</p>
+      `;
+    }
+
+    carregarHospedagem();
+  </script>
+</body>
+</html>

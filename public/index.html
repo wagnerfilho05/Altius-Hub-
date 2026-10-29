@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Altius Hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Altius Hub</h1>
+    <p>Gerenciamento de reservas e atendimento ao hóspede</p>
+  </header>
+
+  <main>
+    <div class="menu">
+      <button id="botaoNova" class="ativo">Nova reserva</button>
+      <button id="botaoLista">Reservas cadastradas</button>
+      <button id="botaoFluxo">Fluxo do projeto</button>
+    </div>
+
+    <section id="telaNova" class="tela">
+      <h2>Nova reserva</h2>
+      <p>Preencha os dados para cadastrar uma reserva.</p>
+
+      <form id="formReserva">
+        <label for="hospede">Nome do hóspede</label>
+        <input id="hospede" type="text" required>
+
+        <label for="canal">Canal da reserva</label>
+        <select id="canal" required>
+          <option value="">Selecione</option>
+          <option value="WhatsApp">WhatsApp</option>
+          <option value="Instagram">Instagram</option>
+          <option value="Airbnb">Airbnb</option>
+          <option value="Booking">Booking</option>
+        </select>
+
+        <label for="entrada">Check-in</label>
+        <input id="entrada" type="date" required>
+
+        <label for="saida">Check-out</label>
+        <input id="saida" type="date" required>
+
+        <label for="apartamento">Apartamento</label>
+        <select id="apartamento" required>
+          <option value="">Carregando apartamentos...</option>
+        </select>
+
+        <button type="submit" class="salvar">Cadastrar reserva</button>
+      </form>
+
+      <div id="mensagem"></div>
+    </section>
+
+    <section id="telaLista" class="tela escondida">
+      <h2>Reservas cadastradas</h2>
+
+      <div class="tabela">
+        <table>
+          <thead>
+            <tr>
+              <th>Hóspede</th>
+              <th>Canal</th>
+              <th>Check-in</th>
+              <th>Check-out</th>
+              <th>Apartamento</th>
+              <th>Informações</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="listaReservas"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="telaFluxo" class="tela escondida">
+      <h2>Fluxo principal</h2>
+      <ol>
+        <li>Receber a reserva ou solicitação.</li>
+        <li>Verificar os dados e o canal.</li>
+        <li>Verificar a disponibilidade do apartamento.</li>
+        <li>Confirmar e registrar a reserva.</li>
+        <li>Associar a reserva ao apartamento.</li>
+        <li>Disponibilizar as informações da hospedagem ao hóspede.</li>
+      </ol>
+      <p class="aviso">Nesta versão, o sistema cadastra a reserva e verifica se já existe outra reserva no mesmo apartamento e período.</p>
+    </section>
+  </main>
+
+  <footer>
+    Projeto acadêmico - Sistemas de Informação
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

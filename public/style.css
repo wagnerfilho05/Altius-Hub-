@@ -1,0 +1,151 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
+  color: #222;
+}
+
+header {
+  background: #20344d;
+  color: white;
+  padding: 25px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0 0 5px 0;
+}
+
+header p {
+  margin: 0;
+}
+
+main {
+  width: 90%;
+  max-width: 950px;
+  margin: 25px auto;
+}
+
+.menu {
+  margin-bottom: 15px;
+}
+
+.menu button {
+  padding: 10px 15px;
+  border: 1px solid #bbb;
+  background: white;
+  cursor: pointer;
+}
+
+.menu button.ativo {
+  background: #20344d;
+  color: white;
+}
+
+.tela {
+  background: white;
+  padding: 20px;
+  border: 1px solid #ddd;
+}
+
+.escondida {
+  display: none;
+}
+
+form {
+  max-width: 600px;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 9px;
+  margin-top: 5px;
+  border: 1px solid #bbb;
+}
+
+.salvar {
+  margin-top: 18px;
+  padding: 10px 16px;
+  background: #20344d;
+  color: white;
+  border: 0;
+  cursor: pointer;
+}
+
+.tabela {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 9px;
+  text-align: left;
+}
+
+th {
+  background: #ececec;
+}
+
+.excluir {
+  background: #fff;
+  border: 1px solid #999;
+  padding: 6px 9px;
+  cursor: pointer;
+}
+
+.sucesso {
+  background: #e5f4e7;
+  padding: 10px;
+}
+
+.erro {
+  background: #f8dddd;
+  padding: 10px;
+}
+
+.aviso {
+  margin-top: 20px;
+  padding: 10px;
+  background: #fff3cd;
+  border: 1px solid #ead48a;
+}
+
+.informacoes {
+  margin-top: 20px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+@media (max-width: 650px) {
+  main {
+    width: 95%;
+  }
+
+  .menu button {
+    display: block;
+    width: 100%;
+    margin-bottom: 5px;
+  }
+}

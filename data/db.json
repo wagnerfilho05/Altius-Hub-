@@ -1,0 +1,92 @@
+{
+  "apartamentos": [
+    {
+      "id": 1,
+      "empreendimento": "Boulevard Plaza",
+      "numero": "301",
+      "nome": "Boulevard Plaza — Apto 301",
+      "localizacao": "Rua Malaquias Souza do O, 17 - Mirante, Campina Grande - PB",
+      "checkin": "14:00",
+      "checkout": "11:00",
+      "wifi": "Informação cadastrada pelo responsável",
+      "acesso": "Orientações disponibilizadas antes da hospedagem"
+    },
+    {
+      "id": 2,
+      "empreendimento": "Boulevard Plaza",
+      "numero": "302",
+      "nome": "Boulevard Plaza — Apto 302",
+      "localizacao": "Rua Malaquias Souza do O, 17 - Mirante, Campina Grande - PB",
+      "checkin": "14:00",
+      "checkout": "11:00",
+      "wifi": "Informação cadastrada pelo responsável",
+      "acesso": "Orientações disponibilizadas antes da hospedagem"
+    },
+    {
+      "id": 3,
+      "empreendimento": "Boulevard Plaza",
+      "numero": "604",
+      "nome": "Boulevard Plaza — Apto 604",
+      "localizacao": "Rua Malaquias Souza do O, 17 - Mirante, Campina Grande - PB",
+      "checkin": "14:00",
+      "checkout": "11:00",
+      "wifi": "Informação cadastrada pelo responsável",
+      "acesso": "Orientações disponibilizadas antes da hospedagem"
+    },
+    {
+      "id": 4,
+      "empreendimento": "Residencial Sirius",
+      "numero": "107",
+      "nome": "Residencial Sirius — Apto 107",
+      "localizacao": "Rua Olegário Mariano, 270 - Catolé, Campina Grande - PB",
+      "checkin": "14:00",
+      "checkout": "11:00",
+      "wifi": "Informação cadastrada pelo responsável",
+      "acesso": "Orientações disponibilizadas antes da hospedagem"
+    },
+    {
+      "id": 5,
+      "empreendimento": "Residencial Sirius",
+      "numero": "206",
+      "nome": "Residencial Sirius — Apto 206",
+      "localizacao": "Rua Olegário Mariano, 270 - Catolé, Campina Grande - PB",
+      "checkin": "14:00",
+      "checkout": "11:00",
+      "wifi": "Informação cadastrada pelo responsável",
+      "acesso": "Orientações disponibilizadas antes da hospedagem"
+    },
+    {
+      "id": 6,
+      "empreendimento": "Residencial Sirius",
+      "numero": "207",
+      "nome": "Residencial Sirius — Apto 207",
+      "localizacao": "Rua Olegário Mariano, 270 - Catolé, Campina Grande - PB",
+      "checkin": "14:00",
+      "checkout": "11:00",
+      "wifi": "Informação cadastrada pelo responsável",
+      "acesso": "Orientações disponibilizadas antes da hospedagem"
+    },
+    {
+      "id": 7,
+      "empreendimento": "Residencial Sirius",
+      "numero": "403",
+      "nome": "Residencial Sirius — Apto 403",
+      "localizacao": "Rua Olegário Mariano, 270 - Catolé, Campina Grande - PB",
+      "checkin": "14:00",
+      "checkout": "11:00",
+      "wifi": "Informação cadastrada pelo responsável",
+      "acesso": "Orientações disponibilizadas antes da hospedagem"
+    }
+  ],
+  "reservas": [
+    {
+      "id": 1,
+      "hospede": "Wagner Filho",
+      "canal": "WhatsApp",
+      "entrada": "2026-10-29",
+      "saida": "2026-10-31",
+      "apartamentoId": 1,
+      "status": "Confirmada"
+    }
+  ]
+}
