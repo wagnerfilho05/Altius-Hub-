@@ -227,6 +227,42 @@ const servidor = http.createServer(function (req, res) {
     return;
   }
 
+  if (rota.startsWith('/api/apartamentos/') && req.method === 'DELETE') {
+    const id = Number(rota.split('/')[3]);
+    const banco = lerBanco();
+
+    let apartamentoExiste = false;
+
+    for (let i = 0; i < banco.apartamentos.length; i++) {
+      if (banco.apartamentos[i].id === id) {
+        apartamentoExiste = true;
+        break;
+      }
+    }
+
+    if (!apartamentoExiste) {
+      responderJson(res, 404, { erro: 'Flat não encontrado.' });
+      return;
+    }
+
+    for (let i = 0; i < banco.reservas.length; i++) {
+      if (banco.reservas[i].apartamentoId === id) {
+        responderJson(res, 409, {
+          erro: 'Esse flat possui reservas vinculadas e não pode ser removido enquanto houver histórico associado.'
+        });
+        return;
+      }
+    }
+
+    banco.apartamentos = banco.apartamentos.filter(function (apartamento) {
+      return apartamento.id !== id;
+    });
+
+    salvarBanco(banco);
+    responderJson(res, 200, { mensagem: 'Flat removido com sucesso.' });
+    return;
+  }
+
   if (rota === '/api/reservas' && req.method === 'GET') {
     const banco = lerBanco();
     responderJson(res, 200, banco.reservas);
