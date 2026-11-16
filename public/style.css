@@ -2197,3 +2197,22 @@ button.dia-calendario {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+
+/* Correção definitiva do alinhamento dos ícones do dashboard */
+.indicador-dashboard .indicador-icone {
+  display: grid !important;
+  place-items: center !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  line-height: 0 !important;
+}
+
+.indicador-dashboard .indicador-icone svg {
+  width: 30px;
+  height: 30px;
+  display: block;
+  margin: 0;
+  transform: translate(0, 0);
+}
