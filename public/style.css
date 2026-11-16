@@ -1180,11 +1180,11 @@ footer div span {
 
 
 .dia-calendario.passada {
-  background: #eceff2;
-  border-color: #dde2e6;
+  background: #e2e6ea;
+  border-color: #d3d9de;
   cursor: default;
 }
 
 .dia-calendario.passada .numero-dia {
-  color: #9aa3ab;
+  color: #7f8992;
 }
