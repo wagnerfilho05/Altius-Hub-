@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Altius Hub</title>
-  <link rel="stylesheet" href="style.css?v=20261116-4">
+  <link rel="stylesheet" href="style.css?v=20261116-5">
 </head>
 <body>
   <header class="topo">
@@ -343,8 +343,25 @@
           </div>
         </div>
         <div id="mensagemEditarFlat"></div>
-        <button type="submit" class="salvar">Salvar alterações</button>
+
+        <div class="acoes-edicao-flat">
+          <button id="botaoRemoverFlat" type="button" class="botao-remover-flat">Remover flat</button>
+          <button type="submit" class="salvar">Salvar alterações</button>
+        </div>
       </form>
+    </div>
+  </div>
+
+  <div id="modalConfirmarExclusaoFlat" class="modal-reserva">
+    <div class="modal-fundo" id="fecharExclusaoFlatFundo"></div>
+    <div class="modal-conteudo modal-confirmacao">
+      <span class="subtitulo">Confirmação</span>
+      <h3>Remover flat?</h3>
+      <p id="textoConfirmacaoExclusaoFlat">Essa ação não poderá ser desfeita.</p>
+      <div class="acoes-modal">
+        <button id="cancelarExclusaoFlat" type="button" class="botao-secundario">Cancelar</button>
+        <button id="confirmarExclusaoFlat" type="button" class="botao-perigo">Remover flat</button>
+      </div>
     </div>
   </div>
 
@@ -369,6 +386,6 @@
     <span class="rodape-marca">Altius Flats</span>
   </footer>
 
-  <script src="app.js?v=20261116-8"></script>
+  <script src="app.js?v=20261116-9"></script>
 </body>
 </html>
