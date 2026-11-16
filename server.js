@@ -320,6 +320,11 @@ const servidor = http.createServer(function (req, res) {
     return;
   }
 
+  if (rota === '/cadastrar-flat.html') {
+    enviarArquivo(res, 'cadastrar-flat.html');
+    return;
+  }
+
   res.writeHead(404);
   res.end('Página não encontrada');
 });
