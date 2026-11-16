@@ -26,38 +26,11 @@
   </header>
 
   <main>
-    <section class="painel-resumo">
-      <div class="resumo-item">
-        <span id="totalApartamentos" class="resumo-numero">0</span>
-        <div>
-          <strong>Apartamentos</strong>
-          <small>cadastrados no MVP</small>
-        </div>
-      </div>
-
-      <div class="resumo-item">
-        <span id="totalEmpreendimentos" class="resumo-numero">0</span>
-        <div>
-          <strong>Empreendimentos</strong>
-          <small>Boulevard e Sirius</small>
-        </div>
-      </div>
-
-      <div class="resumo-item">
-        <span class="resumo-numero">4</span>
-        <div>
-          <strong>Canais</strong>
-          <small>de origem da reserva</small>
-        </div>
-      </div>
-    </section>
-
-    <div class="menu">
+<div class="menu">
       <button id="botaoNova" class="ativo">Nova reserva</button>
       <button id="botaoLista">Reservas cadastradas</button>
       <button id="botaoDisponibilidade">Consultar disponibilidade</button>
       <button id="botaoFlat" type="button">Cadastrar flat</button>
-      <button id="botaoFluxo">Fluxo do projeto</button>
     </div>
 
     <section id="telaNova" class="tela">
@@ -306,29 +279,7 @@
 
       <div id="mensagemFlat"></div>
     </section>
-
-    <section id="telaFluxo" class="tela escondida">
-      <div class="titulo-secao">
-        <div>
-          <span class="subtitulo">Processo</span>
-          <h2>Fluxo principal do MVP</h2>
-          <p>Resumo das etapas implementadas nesta versão do projeto.</p>
-        </div>
-        <span class="numero-etapa">05</span>
-      </div>
-
-      <div class="fluxo">
-        <div class="passo"><span>1</span><p>Receber a reserva ou solicitação.</p></div>
-        <div class="passo"><span>2</span><p>Verificar os dados e o canal.</p></div>
-        <div class="passo"><span>3</span><p>Verificar a disponibilidade do apartamento.</p></div>
-        <div class="passo"><span>4</span><p>Confirmar e registrar a reserva.</p></div>
-        <div class="passo"><span>5</span><p>Associar a reserva ao apartamento.</p></div>
-        <div class="passo"><span>6</span><p>Disponibilizar as informações da hospedagem.</p></div>
-      </div>
-
-      <p class="aviso">Nesta versão, o sistema cadastra a reserva, verifica conflitos de período e permite consultar as informações da hospedagem.</p>
-    </section>
-  </main>
+</main>
 
   <div id="modalReserva" class="modal-reserva">
     <div class="modal-fundo" id="fecharModalFundo"></div>
@@ -358,6 +309,6 @@
     <span>Sistemas de Informação</span>
   </footer>
 
-  <script src="app.js?v=20261116-4"></script>
+  <script src="app.js?v=20261116-5"></script>
 </body>
 </html>
