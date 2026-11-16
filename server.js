@@ -109,7 +109,12 @@ function enviarArquivo(res, nomeArquivo) {
       tipo = 'application/javascript';
     }
 
-    res.writeHead(200, { 'Content-Type': tipo + '; charset=utf-8' });
+    res.writeHead(200, {
+      'Content-Type': tipo + '; charset=utf-8',
+      'Cache-Control': 'no-store, no-cache, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    });
     res.end(arquivo);
   });
 }
