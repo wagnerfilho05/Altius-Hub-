@@ -28,7 +28,7 @@
   <main>
     <section class="painel-resumo">
       <div class="resumo-item">
-        <span class="resumo-numero">7</span>
+        <span id="totalApartamentos" class="resumo-numero">0</span>
         <div>
           <strong>Apartamentos</strong>
           <small>cadastrados no MVP</small>
@@ -36,7 +36,7 @@
       </div>
 
       <div class="resumo-item">
-        <span class="resumo-numero">2</span>
+        <span id="totalEmpreendimentos" class="resumo-numero">0</span>
         <div>
           <strong>Empreendimentos</strong>
           <small>Boulevard e Sirius</small>
@@ -56,6 +56,7 @@
       <button id="botaoNova" class="ativo">Nova reserva</button>
       <button id="botaoLista">Reservas cadastradas</button>
       <button id="botaoDisponibilidade">Consultar disponibilidade</button>
+      <button id="botaoFlat">Cadastrar flat</button>
       <button id="botaoFluxo">Fluxo do projeto</button>
     </div>
 
@@ -240,6 +241,72 @@
       </div>
     </section>
 
+    <section id="telaFlat" class="tela escondida">
+      <div class="titulo-secao">
+        <div>
+          <span class="subtitulo">Cadastro</span>
+          <h2>Cadastrar flat</h2>
+          <p>Adicione um novo apartamento para ele aparecer nas reservas, no calendário e na consulta de disponibilidade.</p>
+        </div>
+        <span class="numero-etapa">04</span>
+      </div>
+
+      <div class="conteudo-flat">
+        <form id="formFlat">
+          <div class="campo campo-completo">
+            <label for="flatEmpreendimento">Empreendimento</label>
+            <input id="flatEmpreendimento" type="text" placeholder="Ex.: Boulevard Plaza" required>
+          </div>
+
+          <div class="campo campo-completo">
+            <label for="flatNumero">Número do flat</label>
+            <input id="flatNumero" type="text" placeholder="Ex.: 305" required>
+          </div>
+
+          <div class="campo campo-completo">
+            <label for="flatLocalizacao">Localização</label>
+            <input id="flatLocalizacao" type="text" placeholder="Endereço do empreendimento" required>
+          </div>
+
+          <div class="linha-formulario">
+            <div class="campo">
+              <label for="flatCheckin">Horário de check-in</label>
+              <input id="flatCheckin" type="time" value="14:00" required>
+            </div>
+
+            <div class="campo">
+              <label for="flatCheckout">Horário de check-out</label>
+              <input id="flatCheckout" type="time" value="11:00" required>
+            </div>
+          </div>
+
+          <button type="submit" class="salvar">Cadastrar flat</button>
+        </form>
+
+        <aside class="painel-ajuda">
+          <h3>Depois de cadastrar</h3>
+          <p>O novo flat entra automaticamente nas principais funções do sistema.</p>
+
+          <div class="item-ajuda">
+            <span>1</span>
+            <p>Fica disponível no cadastro de novas reservas.</p>
+          </div>
+
+          <div class="item-ajuda">
+            <span>2</span>
+            <p>Ganha um calendário individual de disponibilidade.</p>
+          </div>
+
+          <div class="item-ajuda">
+            <span>3</span>
+            <p>Passa a aparecer na consulta de disponibilidade por datas.</p>
+          </div>
+        </aside>
+      </div>
+
+      <div id="mensagemFlat"></div>
+    </section>
+
     <section id="telaFluxo" class="tela escondida">
       <div class="titulo-secao">
         <div>
@@ -247,7 +314,7 @@
           <h2>Fluxo principal do MVP</h2>
           <p>Resumo das etapas implementadas nesta versão do projeto.</p>
         </div>
-        <span class="numero-etapa">04</span>
+        <span class="numero-etapa">05</span>
       </div>
 
       <div class="fluxo">
@@ -291,6 +358,6 @@
     <span>Sistemas de Informação</span>
   </footer>
 
-  <script src="app.js?v=20261116-2"></script>
+  <script src="app.js?v=20261116-3"></script>
 </body>
 </html>
