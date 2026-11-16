@@ -1851,3 +1851,38 @@ button.dia-calendario {
     grid-template-columns: 1fr;
   }
 }
+
+
+.acoes-edicao-flat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.botao-remover-flat {
+  border: 1px solid #d8b8b8;
+  border-radius: 10px;
+  padding: 11px 14px;
+  background: #fff7f7;
+  color: #9a4949;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.botao-remover-flat:hover {
+  background: #fbeaea;
+  border-color: #c98f8f;
+}
+
+@media (max-width: 520px) {
+  .acoes-edicao-flat {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .acoes-edicao-flat button {
+    width: 100%;
+  }
+}
