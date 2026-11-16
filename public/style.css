@@ -1177,3 +1177,14 @@ footer div span {
     grid-template-columns: 1fr;
   }
 }
+
+
+.dia-calendario.passada {
+  background: #eceff2;
+  border-color: #dde2e6;
+  cursor: default;
+}
+
+.dia-calendario.passada .numero-dia {
+  color: #9aa3ab;
+}
