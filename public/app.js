@@ -52,6 +52,12 @@ const fecharEditarFlat = document.getElementById('fecharEditarFlat');
 const fecharEditarFlatFundo = document.getElementById('fecharEditarFlatFundo');
 const formEditarFlat = document.getElementById('formEditarFlat');
 const mensagemEditarFlat = document.getElementById('mensagemEditarFlat');
+const botaoRemoverFlat = document.getElementById('botaoRemoverFlat');
+
+const modalConfirmarExclusaoFlat = document.getElementById('modalConfirmarExclusaoFlat');
+const fecharExclusaoFlatFundo = document.getElementById('fecharExclusaoFlatFundo');
+const cancelarExclusaoFlat = document.getElementById('cancelarExclusaoFlat');
+const confirmarExclusaoFlat = document.getElementById('confirmarExclusaoFlat');
 
 const modalConfirmarExclusao = document.getElementById('modalConfirmarExclusao');
 const fecharExclusaoFundo = document.getElementById('fecharExclusaoFundo');
@@ -877,12 +883,58 @@ formEditarFlat.addEventListener('submit', async function (evento) {
   await carregarApartamentos();
 });
 
+
+botaoRemoverFlat.addEventListener('click', function () {
+  const id = Number(document.getElementById('editarFlatId').value);
+  const apartamento = apartamentos.find(function (item) { return item.id === id; });
+
+  if (!apartamento) {
+    return;
+  }
+
+  document.getElementById('textoConfirmacaoExclusaoFlat').textContent =
+    apartamento.empreendimento + ' - Apartamento ' + apartamento.numero +
+    '. Essa ação não poderá ser desfeita.';
+
+  modalConfirmarExclusaoFlat.classList.add('aberto');
+});
+
+function fecharConfirmacaoExclusaoFlat() {
+  modalConfirmarExclusaoFlat.classList.remove('aberto');
+}
+
+cancelarExclusaoFlat.addEventListener('click', fecharConfirmacaoExclusaoFlat);
+fecharExclusaoFlatFundo.addEventListener('click', fecharConfirmacaoExclusaoFlat);
+
+confirmarExclusaoFlat.addEventListener('click', async function () {
+  const id = Number(document.getElementById('editarFlatId').value);
+
+  const resposta = await fetch('/api/apartamentos/' + id, {
+    method: 'DELETE'
+  });
+
+  const resultado = await resposta.json();
+
+  fecharConfirmacaoExclusaoFlat();
+
+  if (!resposta.ok) {
+    mensagemEditarFlat.innerHTML = '<p class="erro">' + resultado.erro + '</p>';
+    return;
+  }
+
+  fecharModalEdicaoFlat();
+  await carregarApartamentos();
+  await carregarReservas();
+});
+
+
 document.addEventListener('keydown', function (evento) {
   if (evento.key === 'Escape') {
     fecharDetalhesReserva();
     fecharModalEdicaoReserva();
     fecharModalEdicaoFlat();
     fecharConfirmacaoExclusao();
+    fecharConfirmacaoExclusaoFlat();
   }
 });
 
