@@ -1032,3 +1032,53 @@ footer div span {
     grid-template-columns: 1fr;
   }
 }
+
+
+.campo-autocomplete {
+  position: relative;
+}
+
+.sugestoes-hospede {
+  display: none;
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  background: white;
+  border: 1px solid #cfd9e2;
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(23, 40, 61, 0.13);
+  overflow: hidden;
+}
+
+.sugestoes-hospede.aberto {
+  display: block;
+}
+
+.sugestao-hospede {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid #edf1f4;
+  background: white;
+  padding: 11px 13px;
+  text-align: left;
+  color: var(--texto);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.sugestao-hospede:last-child {
+  border-bottom: 0;
+}
+
+.sugestao-hospede:hover {
+  background: #edf3f8;
+  color: var(--azul-escuro);
+}
+
+.sugestao-vazia {
+  padding: 11px 13px;
+  color: var(--texto-claro);
+  font-size: 13px;
+}
