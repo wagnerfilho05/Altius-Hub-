@@ -148,7 +148,10 @@
       <div class="pesquisa-reservas">
         <div>
           <label for="pesquisaHospede">Pesquisar hóspede</label>
-          <input id="pesquisaHospede" type="search" placeholder="Digite o nome do hóspede">
+          <div class="campo-autocomplete">
+            <input id="pesquisaHospede" type="search" placeholder="Digite o nome do hóspede" autocomplete="off">
+            <div id="sugestoesHospede" class="sugestoes-hospede"></div>
+          </div>
         </div>
         <span>Filtra a lista de reservas pelo nome.</span>
       </div>
