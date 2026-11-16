@@ -109,6 +109,10 @@ function enviarArquivo(res, nomeArquivo) {
       tipo = 'application/javascript';
     }
 
+    if (nomeArquivo.endsWith('.svg')) {
+      tipo = 'image/svg+xml';
+    }
+
     res.writeHead(200, {
       'Content-Type': tipo + '; charset=utf-8',
       'Cache-Control': 'no-store, no-cache, must-revalidate',
@@ -317,6 +321,11 @@ const servidor = http.createServer(function (req, res) {
 
   if (rota === '/hospedagem.html') {
     enviarArquivo(res, 'hospedagem.html');
+    return;
+  }
+
+  if (rota === '/altius-wordmark.svg') {
+    enviarArquivo(res, 'altius-wordmark.svg');
     return;
   }
 
