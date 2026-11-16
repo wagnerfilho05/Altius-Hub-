@@ -29,7 +29,7 @@ body {
   width: 90%;
   max-width: 1050px;
   margin: 0 auto;
-  padding: 32px 0;
+  padding: 30px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -38,7 +38,7 @@ body {
 
 .topo h1 {
   margin: 7px 0 5px;
-  font-size: 34px;
+  font-size: 32px;
 }
 
 .topo p {
@@ -105,37 +105,9 @@ main {
   border-color: var(--azul);
 }
 
-.resumo-geral {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.cartao-resumo {
-  background: white;
-  border: 1px solid var(--borda);
-  border-radius: 7px;
-  padding: 17px 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 6px rgba(32, 52, 77, 0.04);
-}
-
-.cartao-resumo span {
-  color: var(--texto-claro);
-  font-size: 13px;
-}
-
-.cartao-resumo strong {
-  color: var(--azul);
-  font-size: 25px;
-}
-
 .tela {
   background: white;
-  padding: 27px;
+  padding: 26px;
   border: 1px solid var(--borda);
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(32, 52, 77, 0.06);
@@ -152,7 +124,7 @@ main {
   gap: 20px;
   border-bottom: 1px solid #edf0f3;
   padding-bottom: 18px;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
 .titulo-secao h2 {
@@ -191,7 +163,7 @@ form {
 }
 
 .campo {
-  margin-bottom: 16px;
+  margin-bottom: 15px;
 }
 
 .campo-completo {
@@ -208,7 +180,7 @@ label {
 input,
 select {
   width: 100%;
-  padding: 12px;
+  padding: 11px 12px;
   border: 1px solid #cbd2d9;
   border-radius: 5px;
   background: white;
@@ -237,7 +209,7 @@ select:focus {
 }
 
 .salvar {
-  padding: 12px 19px;
+  padding: 11px 18px;
   background: var(--azul);
   color: white;
   border: 0;
@@ -284,7 +256,7 @@ select:focus {
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 920px;
+  min-width: 820px;
 }
 
 th,
@@ -298,13 +270,7 @@ td {
 th {
   background: #f1f4f7;
   color: #3f4d5c;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-tbody tr:hover {
-  background: #fafbfd;
+  font-size: 13px;
 }
 
 tr:last-child td {
@@ -319,23 +285,6 @@ td a {
 
 td a:hover {
   text-decoration: underline;
-}
-
-.status {
-  display: inline-block;
-  background: #eaf4ec;
-  color: #35663f;
-  border: 1px solid #cce3d1;
-  padding: 5px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.sem-dados {
-  text-align: center;
-  color: var(--texto-claro);
-  padding: 28px;
 }
 
 .excluir {
@@ -394,6 +343,10 @@ td a:hover {
   line-height: 1.5;
 }
 
+.informacoes {
+  margin-top: 20px;
+}
+
 .cartao-hospedagem {
   max-width: 760px;
   margin: 0 auto;
@@ -446,14 +399,9 @@ footer {
     min-width: 150px;
   }
 
-  .resumo-geral,
   .linha-formulario,
   .fluxo {
     grid-template-columns: 1fr;
-  }
-
-  .cartao-resumo {
-    padding: 14px 16px;
   }
 
   .tela {
