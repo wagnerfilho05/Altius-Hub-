@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const porta = 3000;
+const porta = process.env.PORT || 3000;
 const pastaPublica = path.join(__dirname, 'public');
 const arquivoBanco = path.join(__dirname, 'data', 'db.json');
 
@@ -212,6 +212,6 @@ const servidor = http.createServer(function (req, res) {
   res.end('Página não encontrada');
 });
 
-servidor.listen(porta, function () {
-  console.log('Projeto rodando em http://localhost:' + porta);
+servidor.listen(porta, '0.0.0.0', function () {
+  console.log('Projeto rodando na porta ' + porta);
 });
