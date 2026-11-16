@@ -157,7 +157,8 @@ main {
   box-shadow: 0 3px 10px rgba(23, 40, 61, 0.04);
 }
 
-.menu button {
+.menu button,
+.menu a {
   border: 0;
   padding: 11px 17px;
   border-radius: 6px;
@@ -168,11 +169,19 @@ main {
   font-weight: 600;
 }
 
-.menu button:hover {
+.menu button:hover,
+.menu a:hover {
   background: #f0f4f7;
 }
 
-.menu button.ativo {
+.menu a {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.menu button.ativo,
+.menu a.ativo {
   background: var(--azul);
   color: white;
 }
@@ -566,7 +575,8 @@ footer div span {
     flex-direction: column;
   }
 
-  .menu button {
+  .menu button,
+  .menu a {
     width: 100%;
   }
 
