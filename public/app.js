@@ -169,12 +169,21 @@ function renderizarCalendario() {
 
   for (let dia = 1; dia <= quantidadeDias; dia++) {
     const data = montarData(ano, mes, dia);
+
+    if (data < hoje) {
+      calendario.innerHTML += `
+        <div class="dia-calendario passada">
+          <span class="numero-dia">${dia}</span>
+        </div>
+      `;
+      continue;
+    }
+
     const reserva = procurarReservaDoDia(data, apartamentoId);
 
     let classe = 'livre';
     let estado = 'Livre';
     let detalhe = '';
-
     let siglaCanal = '';
 
     if (reserva) {
