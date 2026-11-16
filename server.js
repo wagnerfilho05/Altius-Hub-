@@ -129,6 +129,61 @@ const servidor = http.createServer(function (req, res) {
     return;
   }
 
+  if (rota === '/api/apartamentos' && req.method === 'POST') {
+    lerCorpo(req, function (novoApartamento) {
+      if (
+        !novoApartamento.empreendimento ||
+        !novoApartamento.numero ||
+        !novoApartamento.localizacao ||
+        !novoApartamento.checkin ||
+        !novoApartamento.checkout
+      ) {
+        responderJson(res, 400, { erro: 'Preencha todos os campos do flat.' });
+        return;
+      }
+
+      const banco = lerBancoAtualizado();
+      const empreendimento = novoApartamento.empreendimento.trim();
+      const numero = novoApartamento.numero.trim();
+
+      for (let i = 0; i < banco.apartamentos.length; i++) {
+        const apartamento = banco.apartamentos[i];
+
+        if (
+          apartamento.empreendimento.toLowerCase() === empreendimento.toLowerCase() &&
+          String(apartamento.numero).toLowerCase() === numero.toLowerCase()
+        ) {
+          responderJson(res, 409, { erro: 'Esse flat já está cadastrado nesse empreendimento.' });
+          return;
+        }
+      }
+
+      let novoId = 1;
+
+      for (let i = 0; i < banco.apartamentos.length; i++) {
+        if (banco.apartamentos[i].id >= novoId) {
+          novoId = banco.apartamentos[i].id + 1;
+        }
+      }
+
+      const apartamentoSalvo = {
+        id: novoId,
+        empreendimento: empreendimento,
+        numero: numero,
+        nome: empreendimento + ' — Apto ' + numero,
+        localizacao: novoApartamento.localizacao.trim(),
+        checkin: novoApartamento.checkin,
+        checkout: novoApartamento.checkout
+      };
+
+      banco.apartamentos.push(apartamentoSalvo);
+      salvarBanco(banco);
+      responderJson(res, 201, apartamentoSalvo);
+    });
+
+    return;
+  }
+
   if (rota === '/api/reservas' && req.method === 'GET') {
     const banco = lerBancoAtualizado();
     responderJson(res, 200, banco.reservas);
