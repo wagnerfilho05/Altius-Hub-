@@ -15,6 +15,58 @@ function salvarBanco(banco) {
   fs.writeFileSync(arquivoBanco, JSON.stringify(banco, null, 2));
 }
 
+function dataAtualBrasil() {
+  const partes = new Intl.DateTimeFormat('pt-BR', {
+    timeZone: 'America/Fortaleza',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).formatToParts(new Date());
+
+  let dia = '';
+  let mes = '';
+  let ano = '';
+
+  for (let i = 0; i < partes.length; i++) {
+    if (partes[i].type === 'day') {
+      dia = partes[i].value;
+    }
+
+    if (partes[i].type === 'month') {
+      mes = partes[i].value;
+    }
+
+    if (partes[i].type === 'year') {
+      ano = partes[i].value;
+    }
+  }
+
+  return ano + '-' + mes + '-' + dia;
+}
+
+function limparReservasPassadas(banco) {
+  const hoje = dataAtualBrasil();
+  const reservasAtivas = [];
+
+  for (let i = 0; i < banco.reservas.length; i++) {
+    if (banco.reservas[i].saida >= hoje) {
+      reservasAtivas.push(banco.reservas[i]);
+    }
+  }
+
+  if (reservasAtivas.length !== banco.reservas.length) {
+    banco.reservas = reservasAtivas;
+    salvarBanco(banco);
+  }
+
+  return banco;
+}
+
+function lerBancoAtualizado() {
+  const banco = lerBanco();
+  return limparReservasPassadas(banco);
+}
+
 function responderJson(res, status, dados) {
   res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8' });
   res.end(JSON.stringify(dados));
@@ -67,13 +119,13 @@ const servidor = http.createServer(function (req, res) {
   const rota = endereco.pathname;
 
   if (rota === '/api/apartamentos' && req.method === 'GET') {
-    const banco = lerBanco();
+    const banco = lerBancoAtualizado();
     responderJson(res, 200, banco.apartamentos);
     return;
   }
 
   if (rota === '/api/reservas' && req.method === 'GET') {
-    const banco = lerBanco();
+    const banco = lerBancoAtualizado();
     responderJson(res, 200, banco.reservas);
     return;
   }
@@ -90,7 +142,7 @@ const servidor = http.createServer(function (req, res) {
         return;
       }
 
-      const banco = lerBanco();
+      const banco = lerBancoAtualizado();
       const apartamentoId = Number(novaReserva.apartamentoId);
 
       for (let i = 0; i < banco.reservas.length; i++) {
@@ -132,7 +184,7 @@ const servidor = http.createServer(function (req, res) {
 
   if (rota.startsWith('/api/reservas/') && req.method === 'GET') {
     const id = Number(rota.split('/')[3]);
-    const banco = lerBanco();
+    const banco = lerBancoAtualizado();
     let reservaEncontrada = null;
     let apartamentoEncontrado = null;
 
@@ -168,7 +220,7 @@ const servidor = http.createServer(function (req, res) {
 
   if (rota.startsWith('/api/reservas/') && req.method === 'DELETE') {
     const id = Number(rota.split('/')[3]);
-    const banco = lerBanco();
+    const banco = lerBancoAtualizado();
     const novasReservas = [];
 
     for (let i = 0; i < banco.reservas.length; i++) {
