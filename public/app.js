@@ -6,13 +6,20 @@ let dataCalendario = new Date();
 const botaoNova = document.getElementById('botaoNova');
 const botaoLista = document.getElementById('botaoLista');
 const botaoDisponibilidade = document.getElementById('botaoDisponibilidade');
+const botaoFlat = document.getElementById('botaoFlat');
 const botaoFluxo = document.getElementById('botaoFluxo');
 const telaNova = document.getElementById('telaNova');
 const telaLista = document.getElementById('telaLista');
 const telaDisponibilidade = document.getElementById('telaDisponibilidade');
+const telaFlat = document.getElementById('telaFlat');
 const telaFluxo = document.getElementById('telaFluxo');
 const formulario = document.getElementById('formReserva');
 const mensagem = document.getElementById('mensagem');
+
+const formFlat = document.getElementById('formFlat');
+const mensagemFlat = document.getElementById('mensagemFlat');
+const totalApartamentos = document.getElementById('totalApartamentos');
+const totalEmpreendimentos = document.getElementById('totalEmpreendimentos');
 
 const apartamentoCalendario = document.getElementById('apartamentoCalendario');
 const calendario = document.getElementById('calendario');
@@ -36,11 +43,13 @@ function mostrarTela(tela) {
   telaNova.classList.add('escondida');
   telaLista.classList.add('escondida');
   telaDisponibilidade.classList.add('escondida');
+  telaFlat.classList.add('escondida');
   telaFluxo.classList.add('escondida');
 
   botaoNova.classList.remove('ativo');
   botaoLista.classList.remove('ativo');
   botaoDisponibilidade.classList.remove('ativo');
+  botaoFlat.classList.remove('ativo');
   botaoFluxo.classList.remove('ativo');
 
   if (tela === 'nova') {
@@ -56,6 +65,11 @@ function mostrarTela(tela) {
   if (tela === 'disponibilidade') {
     telaDisponibilidade.classList.remove('escondida');
     botaoDisponibilidade.classList.add('ativo');
+  }
+
+  if (tela === 'flat') {
+    telaFlat.classList.remove('escondida');
+    botaoFlat.classList.add('ativo');
   }
 
   if (tela === 'fluxo') {
@@ -75,6 +89,10 @@ botaoLista.addEventListener('click', function () {
 
 botaoDisponibilidade.addEventListener('click', function () {
   mostrarTela('disponibilidade');
+});
+
+botaoFlat.addEventListener('click', function () {
+  mostrarTela('flat');
 });
 
 botaoFluxo.addEventListener('click', function () {
@@ -264,8 +282,24 @@ mesSeguinte.addEventListener('click', function () {
   renderizarCalendario();
 });
 
+function atualizarResumoApartamentos() {
+  totalApartamentos.textContent = apartamentos.length;
+
+  const empreendimentos = [];
+
+  for (let i = 0; i < apartamentos.length; i++) {
+    if (!empreendimentos.includes(apartamentos[i].empreendimento)) {
+      empreendimentos.push(apartamentos[i].empreendimento);
+    }
+  }
+
+  totalEmpreendimentos.textContent = empreendimentos.length;
+}
+
 async function carregarApartamentos() {
   const select = document.getElementById('apartamento');
+  const valorReserva = select.value;
+  const valorCalendario = apartamentoCalendario.value;
 
   try {
     const resposta = await fetch('/api/apartamentos');
@@ -282,7 +316,17 @@ async function carregarApartamentos() {
       select.appendChild(opcao);
     }
 
+    if (valorReserva) {
+      select.value = valorReserva;
+    }
+
     preencherApartamentoCalendario();
+
+    if (valorCalendario) {
+      apartamentoCalendario.value = valorCalendario;
+    }
+
+    atualizarResumoApartamentos();
     renderizarCalendario();
   } catch (erro) {
     select.innerHTML = '<option value="">Erro ao carregar</option>';
@@ -664,6 +708,45 @@ formDisponibilidade.addEventListener('submit', async function (evento) {
 
 window.mostrarDetalhesReserva = mostrarDetalhesReserva;
 window.irParaReservaNoCalendario = irParaReservaNoCalendario;
+
+formFlat.addEventListener('submit', async function (evento) {
+  evento.preventDefault();
+  mensagemFlat.innerHTML = '';
+
+  const dados = {
+    empreendimento: document.getElementById('flatEmpreendimento').value.trim(),
+    numero: document.getElementById('flatNumero').value.trim(),
+    localizacao: document.getElementById('flatLocalizacao').value.trim(),
+    checkin: document.getElementById('flatCheckin').value,
+    checkout: document.getElementById('flatCheckout').value
+  };
+
+  try {
+    const resposta = await fetch('/api/apartamentos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dados)
+    });
+
+    const resultado = await resposta.json();
+
+    if (!resposta.ok) {
+      mensagemFlat.innerHTML = '<p class="erro">' + resultado.erro + '</p>';
+      return;
+    }
+
+    mensagemFlat.innerHTML = '<p class="sucesso">Flat cadastrado com sucesso.</p>';
+    formFlat.reset();
+    document.getElementById('flatCheckin').value = '14:00';
+    document.getElementById('flatCheckout').value = '11:00';
+
+    await carregarApartamentos();
+  } catch (erro) {
+    mensagemFlat.innerHTML = '<p class="erro">Não foi possível cadastrar o flat.</p>';
+  }
+});
 
 formulario.addEventListener('submit', async function (evento) {
   evento.preventDefault();
