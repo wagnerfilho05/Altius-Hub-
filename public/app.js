@@ -53,23 +53,6 @@ function formatarData(data) {
   return partes[2] + '/' + partes[1] + '/' + partes[0];
 }
 
-function atualizarResumo() {
-  document.getElementById('totalReservas').textContent = reservas.length;
-  document.getElementById('totalApartamentos').textContent = apartamentos.length;
-
-  const empreendimentos = [];
-
-  for (let i = 0; i < apartamentos.length; i++) {
-    const nome = apartamentos[i].empreendimento;
-
-    if (!empreendimentos.includes(nome)) {
-      empreendimentos.push(nome);
-    }
-  }
-
-  document.getElementById('totalEmpreendimentos').textContent = empreendimentos.length;
-}
-
 async function carregarApartamentos() {
   const select = document.getElementById('apartamento');
 
@@ -77,35 +60,16 @@ async function carregarApartamentos() {
     const resposta = await fetch('/api/apartamentos');
     apartamentos = await resposta.json();
 
-    select.innerHTML = '<option value="">Selecione o apartamento</option>';
-
-    const empreendimentos = [];
+    select.innerHTML = '<option value="">Selecione</option>';
 
     for (let i = 0; i < apartamentos.length; i++) {
-      if (!empreendimentos.includes(apartamentos[i].empreendimento)) {
-        empreendimentos.push(apartamentos[i].empreendimento);
-      }
+      const apartamento = apartamentos[i];
+      const opcao = document.createElement('option');
+
+      opcao.value = apartamento.id;
+      opcao.textContent = apartamento.empreendimento + ' - Apto ' + apartamento.numero;
+      select.appendChild(opcao);
     }
-
-    for (let i = 0; i < empreendimentos.length; i++) {
-      const grupo = document.createElement('optgroup');
-      grupo.label = empreendimentos[i];
-
-      for (let j = 0; j < apartamentos.length; j++) {
-        const apartamento = apartamentos[j];
-
-        if (apartamento.empreendimento === empreendimentos[i]) {
-          const opcao = document.createElement('option');
-          opcao.value = apartamento.id;
-          opcao.textContent = 'Apartamento ' + apartamento.numero;
-          grupo.appendChild(opcao);
-        }
-      }
-
-      select.appendChild(grupo);
-    }
-
-    atualizarResumo();
   } catch (erro) {
     select.innerHTML = '<option value="">Erro ao carregar</option>';
     mensagem.innerHTML = '<p class="erro">Não foi possível carregar os apartamentos. Execute o projeto com npm start.</p>';
@@ -120,10 +84,9 @@ async function carregarReservas() {
     reservas = await resposta.json();
 
     corpoTabela.innerHTML = '';
-    atualizarResumo();
 
     if (reservas.length === 0) {
-      corpoTabela.innerHTML = '<tr><td colspan="8" class="sem-dados">Nenhuma reserva cadastrada até o momento.</td></tr>';
+      corpoTabela.innerHTML = '<tr><td colspan="7">Nenhuma reserva cadastrada.</td></tr>';
       return;
     }
 
@@ -139,19 +102,18 @@ async function carregarReservas() {
 
       corpoTabela.innerHTML += `
         <tr>
-          <td><strong>${reserva.hospede}</strong></td>
+          <td>${reserva.hospede}</td>
           <td>${reserva.canal}</td>
           <td>${formatarData(reserva.entrada)}</td>
           <td>${formatarData(reserva.saida)}</td>
           <td>${nomeApartamento}</td>
-          <td><span class="status">${reserva.status}</span></td>
           <td><a href="hospedagem.html?id=${reserva.id}" target="_blank">Abrir</a></td>
           <td><button class="excluir" onclick="excluirReserva(${reserva.id})">Excluir</button></td>
         </tr>
       `;
     }
   } catch (erro) {
-    corpoTabela.innerHTML = '<tr><td colspan="8" class="sem-dados">Erro ao carregar as reservas.</td></tr>';
+    corpoTabela.innerHTML = '<tr><td colspan="7">Erro ao carregar as reservas.</td></tr>';
   }
 }
 
