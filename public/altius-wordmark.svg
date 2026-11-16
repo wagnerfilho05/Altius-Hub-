@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 220" role="img" aria-labelledby="title">
+  <title id="title">Altius Flats</title>
+  <g fill="#e2c67d">
+    <text x="310" y="112" text-anchor="middle"
+      font-family="Georgia, 'Times New Roman', serif"
+      font-size="94" font-weight="400" letter-spacing="8">ALTIUS</text>
+    <line x1="78" y1="152" x2="220" y2="152" stroke="#e2c67d" stroke-width="3"/>
+    <line x1="400" y1="152" x2="542" y2="152" stroke="#e2c67d" stroke-width="3"/>
+    <text x="310" y="168" text-anchor="middle"
+      font-family="Arial, Helvetica, sans-serif"
+      font-size="35" font-weight="500" letter-spacing="15">FLATS</text>
+    <path d="M274 196 C289 183 301 184 310 194 C319 184 331 183 346 196
+             C330 192 322 198 310 208 C298 198 290 192 274 196 Z"
+      fill="none" stroke="#e2c67d" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="310" cy="196" r="5" fill="none" stroke="#e2c67d" stroke-width="3"/>
+  </g>
+</svg>
