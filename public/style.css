@@ -1082,3 +1082,98 @@ footer div span {
   color: var(--texto-claro);
   font-size: 13px;
 }
+
+
+.resultado-pesquisa-hospede {
+  margin-bottom: 20px;
+}
+
+.resultado-hospede-topo {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.resultado-hospede-topo h3 {
+  margin: 2px 0 0;
+  color: var(--azul-escuro);
+  font-size: 19px;
+}
+
+.resultado-hospede-topo > strong {
+  color: var(--azul);
+  font-size: 13px;
+}
+
+.reservas-hospede-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.reserva-hospede-card {
+  border: 1px solid #d8e1e8;
+  border-radius: 9px;
+  padding: 14px;
+  background: #ffffff;
+}
+
+.reserva-hospede-datas {
+  margin-bottom: 10px;
+}
+
+.reserva-hospede-datas strong,
+.reserva-hospede-datas span {
+  display: block;
+}
+
+.reserva-hospede-datas strong {
+  color: var(--azul-escuro);
+  font-size: 15px;
+}
+
+.reserva-hospede-datas span {
+  margin-top: 2px;
+  color: var(--texto-claro);
+  font-size: 12px;
+}
+
+.reserva-hospede-card p {
+  margin: 5px 0;
+  color: #4f5d69;
+  font-size: 13px;
+}
+
+.reserva-hospede-card button {
+  margin-top: 10px;
+  border: 1px solid #cbd7e0;
+  border-radius: 6px;
+  padding: 8px 10px;
+  background: #edf3f8;
+  color: var(--azul);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.reserva-hospede-card button:hover {
+  background: #e2ecf4;
+}
+
+@media (max-width: 820px) {
+  .reservas-hospede-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .resultado-hospede-topo {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .reservas-hospede-grid {
+    grid-template-columns: 1fr;
+  }
+}
