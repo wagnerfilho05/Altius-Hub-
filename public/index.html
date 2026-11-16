@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Altius Hub</title>
-  <link rel="stylesheet" href="style.css?v=20261116-2">
+  <link rel="stylesheet" href="style.css?v=20261116-3">
 </head>
 <body>
   <header class="topo">
@@ -15,21 +15,90 @@
           <h1>Altius Hub</h1>
           <p>Reservas, disponibilidade e flats em um só lugar.</p>
         </div>
-
         <img class="logo-dourada-canto" src="altius-wordmark.svg" alt="Altius Flats">
       </div>
     </div>
   </header>
 
   <main>
-<div class="menu">
-      <button id="botaoNova" type="button" class="ativo">Nova reserva</button>
-      <button id="botaoLista" type="button">Reservas cadastradas</button>
-      <button id="botaoDisponibilidade" type="button">Consultar disponibilidade</button>
-      <button id="botaoFlat" type="button">Cadastrar flat</button>
+    <div class="menu">
+      <button id="botaoDashboard" type="button" class="ativo"><span class="icone-menu">⌂</span> Visão geral</button>
+      <button id="botaoNova" type="button"><span class="icone-menu">＋</span> Nova reserva</button>
+      <button id="botaoLista" type="button"><span class="icone-menu">▦</span> Reservas</button>
+      <button id="botaoDisponibilidade" type="button"><span class="icone-menu">⌕</span> Disponibilidade</button>
+      <button id="botaoFlat" type="button"><span class="icone-menu">◇</span> Flats</button>
     </div>
 
-    <section id="telaNova" class="tela">
+    <section id="telaDashboard" class="tela">
+      <div class="dashboard-cabecalho">
+        <div>
+          <span class="subtitulo">Visão geral</span>
+          <h2 id="saudacaoDashboard">Operação de hoje</h2>
+          <p id="dataDashboard"></p>
+        </div>
+        <button id="atalhoNovaReserva" type="button" class="salvar">+ Nova reserva</button>
+      </div>
+
+      <div class="dashboard-indicadores">
+        <div class="indicador-dashboard">
+          <span class="indicador-icone">↓</span>
+          <div>
+            <strong id="totalCheckinsHoje">0</strong>
+            <span>Check-ins hoje</span>
+          </div>
+        </div>
+        <div class="indicador-dashboard">
+          <span class="indicador-icone">↑</span>
+          <div>
+            <strong id="totalCheckoutsHoje">0</strong>
+            <span>Check-outs hoje</span>
+          </div>
+        </div>
+        <div class="indicador-dashboard">
+          <span class="indicador-icone">●</span>
+          <div>
+            <strong id="totalOcupadosHoje">0</strong>
+            <span>Flats ocupados</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="busca-global">
+        <div>
+          <span class="subtitulo">Busca rápida</span>
+          <h3>Encontrar hóspede</h3>
+        </div>
+        <div class="busca-global-controles">
+          <input id="buscaGlobal" type="search" placeholder="Digite o nome do hóspede">
+          <button id="botaoBuscaGlobal" type="button">Pesquisar</button>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="bloco-dashboard">
+          <div class="bloco-dashboard-titulo">
+            <div>
+              <span class="subtitulo">Agenda</span>
+              <h3>Próximos check-ins</h3>
+            </div>
+            <button id="verTodasReservas" type="button" class="link-botao">Ver reservas</button>
+          </div>
+          <div id="proximosCheckins" class="lista-dashboard"></div>
+        </div>
+
+        <div class="bloco-dashboard">
+          <div class="bloco-dashboard-titulo">
+            <div>
+              <span class="subtitulo">Agora</span>
+              <h3>Ocupação de hoje</h3>
+            </div>
+          </div>
+          <div id="ocupacaoHoje" class="lista-dashboard ocupacao-dashboard"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="telaNova" class="tela escondida">
       <div class="titulo-secao">
         <div>
           <span class="subtitulo">Cadastro</span>
@@ -62,7 +131,6 @@
               <label for="entrada">Check-in</label>
               <input id="entrada" type="date" required>
             </div>
-
             <div class="campo">
               <label for="saida">Check-out</label>
               <input id="saida" type="date" required>
@@ -83,34 +151,21 @@
 
         <aside class="painel-ajuda">
           <h3>Antes de cadastrar</h3>
-          <p>O sistema faz uma verificação simples antes de salvar a reserva.</p>
-
-          <div class="item-ajuda">
-            <span>1</span>
-            <p>Confere se todos os campos foram preenchidos.</p>
-          </div>
-
-          <div class="item-ajuda">
-            <span>2</span>
-            <p>Verifica se o check-out acontece depois do check-in.</p>
-          </div>
-
-          <div class="item-ajuda">
-            <span>3</span>
-            <p>Evita duas reservas no mesmo apartamento e período.</p>
-          </div>
+          <p>O sistema confere os dados e a disponibilidade antes de salvar.</p>
+          <div class="item-ajuda"><span>1</span><p>Verifica se todos os campos foram preenchidos.</p></div>
+          <div class="item-ajuda"><span>2</span><p>Confere se o check-out acontece depois do check-in.</p></div>
+          <div class="item-ajuda"><span>3</span><p>Evita conflito de datas no mesmo apartamento.</p></div>
         </aside>
       </div>
-
       <div id="mensagem"></div>
     </section>
 
     <section id="telaLista" class="tela escondida">
       <div class="titulo-secao">
         <div>
-          <span class="subtitulo">Consulta</span>
+          <span class="subtitulo">Reservas</span>
           <h2>Reservas cadastradas</h2>
-          <p>Consulte as reservas registradas e abra as informações da hospedagem.</p>
+          <p>Consulte reservas atuais, futuras e o histórico dos hóspedes.</p>
         </div>
         <span class="numero-etapa">02</span>
       </div>
@@ -123,7 +178,7 @@
             <div id="sugestoesHospede" class="sugestoes-hospede"></div>
           </div>
         </div>
-        <span>Pesquise um hóspede para ver todas as reservas dele.</span>
+        <span>Reservas finalizadas continuam disponíveis no histórico.</span>
       </div>
 
       <div id="resultadoPesquisaHospede" class="resultado-pesquisa-hospede"></div>
@@ -147,6 +202,7 @@
         <div class="legenda-calendario">
           <span><i class="legenda-cor livre"></i> Livre</span>
           <span><i class="legenda-cor ocupado"></i> Reservado</span>
+          <span><i class="legenda-cor passado"></i> Data passada</span>
         </div>
 
         <div class="calendario-area">
@@ -157,7 +213,7 @@
       <div class="cabecalho-lista">
         <div>
           <h3>Lista de reservas</h3>
-          <p>Veja os dados completos das reservas cadastradas.</p>
+          <p>Use o status para identificar rapidamente cada hospedagem.</p>
         </div>
       </div>
 
@@ -166,12 +222,12 @@
           <thead>
             <tr>
               <th>Hóspede</th>
+              <th>Status</th>
               <th>Canal</th>
               <th>Check-in</th>
               <th>Check-out</th>
               <th>Apartamento</th>
-              <th>Informações</th>
-              <th></th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody id="listaReservas"></tbody>
@@ -184,7 +240,7 @@
         <div>
           <span class="subtitulo">Disponibilidade</span>
           <h2>Consultar disponibilidade</h2>
-          <p>Informe o período desejado para verificar quais apartamentos estão livres.</p>
+          <p>Informe o período e veja todos os flats livres.</p>
         </div>
         <span class="numero-etapa">03</span>
       </div>
@@ -195,13 +251,11 @@
             <label for="consultaEntrada">Check-in</label>
             <input id="consultaEntrada" type="date" required>
           </div>
-
           <div class="campo">
             <label for="consultaSaida">Check-out</label>
             <input id="consultaSaida" type="date" required>
           </div>
         </div>
-
         <button type="submit" class="salvar">Verificar disponibilidade</button>
       </form>
 
@@ -213,9 +267,9 @@
     <section id="telaFlat" class="tela escondida">
       <div class="titulo-secao">
         <div>
-          <span class="subtitulo">Cadastro</span>
-          <h2>Cadastrar flat</h2>
-          <p>Adicione um novo apartamento para ele aparecer nas reservas, no calendário e na consulta de disponibilidade.</p>
+          <span class="subtitulo">Flats</span>
+          <h2>Gerenciar flats</h2>
+          <p>Cadastre novos apartamentos e consulte os imóveis existentes.</p>
         </div>
         <span class="numero-etapa">04</span>
       </div>
@@ -226,74 +280,154 @@
             <label for="flatEmpreendimento">Empreendimento</label>
             <input id="flatEmpreendimento" type="text" placeholder="Ex.: Boulevard Plaza" required>
           </div>
-
           <div class="campo campo-completo">
             <label for="flatNumero">Número do flat</label>
             <input id="flatNumero" type="text" placeholder="Ex.: 305" required>
           </div>
-
           <div class="campo campo-completo">
             <label for="flatLocalizacao">Localização</label>
             <input id="flatLocalizacao" type="text" placeholder="Endereço do empreendimento" required>
           </div>
-
           <div class="linha-formulario">
             <div class="campo">
               <label for="flatCheckin">Horário de check-in</label>
               <input id="flatCheckin" type="time" value="14:00" required>
             </div>
-
             <div class="campo">
               <label for="flatCheckout">Horário de check-out</label>
               <input id="flatCheckout" type="time" value="11:00" required>
             </div>
           </div>
-
           <button type="submit" class="salvar">Cadastrar flat</button>
         </form>
 
         <aside class="painel-ajuda">
-          <h3>Depois de cadastrar</h3>
-          <p>O novo flat entra automaticamente nas principais funções do sistema.</p>
-
-          <div class="item-ajuda">
-            <span>1</span>
-            <p>Fica disponível no cadastro de novas reservas.</p>
-          </div>
-
-          <div class="item-ajuda">
-            <span>2</span>
-            <p>Ganha um calendário individual de disponibilidade.</p>
-          </div>
-
-          <div class="item-ajuda">
-            <span>3</span>
-            <p>Passa a aparecer na consulta de disponibilidade por datas.</p>
-          </div>
+          <h3>Cadastro integrado</h3>
+          <p>O flat cadastrado entra automaticamente nas outras áreas.</p>
+          <div class="item-ajuda"><span>1</span><p>Aparece no cadastro de reservas.</p></div>
+          <div class="item-ajuda"><span>2</span><p>Recebe calendário individual.</p></div>
+          <div class="item-ajuda"><span>3</span><p>Participa da consulta de disponibilidade.</p></div>
         </aside>
       </div>
 
       <div id="mensagemFlat"></div>
+
+      <div class="lista-flats-area">
+        <div class="cabecalho-lista">
+          <div>
+            <h3>Flats cadastrados</h3>
+            <p>Consulte e edite os dados básicos de cada apartamento.</p>
+          </div>
+        </div>
+        <div id="listaFlats" class="lista-flats"></div>
+      </div>
     </section>
-</main>
+  </main>
 
   <div id="modalReserva" class="modal-reserva">
     <div class="modal-fundo" id="fecharModalFundo"></div>
-
     <div class="modal-conteudo">
       <button id="fecharModalReserva" class="modal-fechar" type="button">×</button>
-
       <span class="subtitulo">Reserva</span>
       <h3 id="modalHospede">Hóspede</h3>
-
       <div class="modal-dados">
+        <p><strong>Status:</strong> <span id="modalStatus"></span></p>
         <p><strong>Canal:</strong> <span id="modalCanal"></span></p>
         <p><strong>Apartamento:</strong> <span id="modalApartamento"></span></p>
         <p><strong>Check-in:</strong> <span id="modalEntrada"></span></p>
         <p><strong>Check-out:</strong> <span id="modalSaida"></span></p>
       </div>
-
       <a id="modalLinkHospedagem" class="modal-link" href="#" target="_blank">Abrir informações da hospedagem</a>
+    </div>
+  </div>
+
+  <div id="modalEditarReserva" class="modal-reserva">
+    <div class="modal-fundo" id="fecharEditarReservaFundo"></div>
+    <div class="modal-conteudo modal-formulario">
+      <button id="fecharEditarReserva" class="modal-fechar" type="button">×</button>
+      <span class="subtitulo">Editar</span>
+      <h3>Editar reserva</h3>
+      <form id="formEditarReserva">
+        <input id="editarReservaId" type="hidden">
+        <div class="campo">
+          <label for="editarHospede">Hóspede</label>
+          <input id="editarHospede" type="text" required>
+        </div>
+        <div class="campo">
+          <label for="editarCanal">Canal</label>
+          <select id="editarCanal" required>
+            <option value="WhatsApp">WhatsApp</option>
+            <option value="Instagram">Instagram</option>
+            <option value="Airbnb">Airbnb</option>
+            <option value="Booking">Booking</option>
+          </select>
+        </div>
+        <div class="linha-formulario">
+          <div class="campo">
+            <label for="editarEntrada">Check-in</label>
+            <input id="editarEntrada" type="date" required>
+          </div>
+          <div class="campo">
+            <label for="editarSaida">Check-out</label>
+            <input id="editarSaida" type="date" required>
+          </div>
+        </div>
+        <div class="campo">
+          <label for="editarApartamento">Apartamento</label>
+          <select id="editarApartamento" required></select>
+        </div>
+        <div id="mensagemEditarReserva"></div>
+        <button type="submit" class="salvar">Salvar alterações</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="modalEditarFlat" class="modal-reserva">
+    <div class="modal-fundo" id="fecharEditarFlatFundo"></div>
+    <div class="modal-conteudo modal-formulario">
+      <button id="fecharEditarFlat" class="modal-fechar" type="button">×</button>
+      <span class="subtitulo">Editar</span>
+      <h3>Editar flat</h3>
+      <form id="formEditarFlat">
+        <input id="editarFlatId" type="hidden">
+        <div class="campo">
+          <label for="editarFlatEmpreendimento">Empreendimento</label>
+          <input id="editarFlatEmpreendimento" type="text" required>
+        </div>
+        <div class="campo">
+          <label for="editarFlatNumero">Número</label>
+          <input id="editarFlatNumero" type="text" required>
+        </div>
+        <div class="campo">
+          <label for="editarFlatLocalizacao">Localização</label>
+          <input id="editarFlatLocalizacao" type="text" required>
+        </div>
+        <div class="linha-formulario">
+          <div class="campo">
+            <label for="editarFlatCheckin">Check-in</label>
+            <input id="editarFlatCheckin" type="time" required>
+          </div>
+          <div class="campo">
+            <label for="editarFlatCheckout">Check-out</label>
+            <input id="editarFlatCheckout" type="time" required>
+          </div>
+        </div>
+        <div id="mensagemEditarFlat"></div>
+        <button type="submit" class="salvar">Salvar alterações</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="modalConfirmarExclusao" class="modal-reserva">
+    <div class="modal-fundo" id="fecharExclusaoFundo"></div>
+    <div class="modal-conteudo modal-confirmacao">
+      <span class="subtitulo">Confirmação</span>
+      <h3>Excluir reserva?</h3>
+      <p id="textoConfirmacaoExclusao">Essa ação não poderá ser desfeita.</p>
+      <div class="acoes-modal">
+        <button id="cancelarExclusao" type="button" class="botao-secundario">Cancelar</button>
+        <button id="confirmarExclusao" type="button" class="botao-perigo">Excluir reserva</button>
+      </div>
     </div>
   </div>
 
@@ -305,54 +439,6 @@
     <span class="rodape-marca">Altius Flats</span>
   </footer>
 
-  <script>
-    (function () {
-      const botoes = {
-        nova: document.getElementById('botaoNova'),
-        lista: document.getElementById('botaoLista'),
-        disponibilidade: document.getElementById('botaoDisponibilidade'),
-        flat: document.getElementById('botaoFlat')
-      };
-
-      const telas = {
-        nova: document.getElementById('telaNova'),
-        lista: document.getElementById('telaLista'),
-        disponibilidade: document.getElementById('telaDisponibilidade'),
-        flat: document.getElementById('telaFlat')
-      };
-
-      function abrirTela(nome) {
-        const nomes = Object.keys(telas);
-
-        for (let i = 0; i < nomes.length; i++) {
-          const item = nomes[i];
-          telas[item].classList.add('escondida');
-          botoes[item].classList.remove('ativo');
-        }
-
-        telas[nome].classList.remove('escondida');
-        botoes[nome].classList.add('ativo');
-      }
-
-      botoes.nova.addEventListener('click', function () {
-        abrirTela('nova');
-      });
-
-      botoes.lista.addEventListener('click', function () {
-        abrirTela('lista');
-      });
-
-      botoes.disponibilidade.addEventListener('click', function () {
-        abrirTela('disponibilidade');
-      });
-
-      botoes.flat.addEventListener('click', function () {
-        abrirTela('flat');
-      });
-
-      window.abrirTelaAltius = abrirTela;
-    })();
-  </script>
-  <script src="app.js?v=20261116-6"></script>
+  <script src="app.js?v=20261116-7"></script>
 </body>
 </html>
