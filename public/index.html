@@ -27,9 +27,9 @@
 
   <main>
 <div class="menu">
-      <button id="botaoNova" class="ativo">Nova reserva</button>
-      <button id="botaoLista">Reservas cadastradas</button>
-      <button id="botaoDisponibilidade">Consultar disponibilidade</button>
+      <button id="botaoNova" type="button" class="ativo">Nova reserva</button>
+      <button id="botaoLista" type="button">Reservas cadastradas</button>
+      <button id="botaoDisponibilidade" type="button">Consultar disponibilidade</button>
       <button id="botaoFlat" type="button">Cadastrar flat</button>
     </div>
 
@@ -309,6 +309,54 @@
     <span>Sistemas de Informação</span>
   </footer>
 
-  <script src="app.js?v=20261116-5"></script>
+  <script>
+    (function () {
+      const botoes = {
+        nova: document.getElementById('botaoNova'),
+        lista: document.getElementById('botaoLista'),
+        disponibilidade: document.getElementById('botaoDisponibilidade'),
+        flat: document.getElementById('botaoFlat')
+      };
+
+      const telas = {
+        nova: document.getElementById('telaNova'),
+        lista: document.getElementById('telaLista'),
+        disponibilidade: document.getElementById('telaDisponibilidade'),
+        flat: document.getElementById('telaFlat')
+      };
+
+      function abrirTela(nome) {
+        const nomes = Object.keys(telas);
+
+        for (let i = 0; i < nomes.length; i++) {
+          const item = nomes[i];
+          telas[item].classList.add('escondida');
+          botoes[item].classList.remove('ativo');
+        }
+
+        telas[nome].classList.remove('escondida');
+        botoes[nome].classList.add('ativo');
+      }
+
+      botoes.nova.addEventListener('click', function () {
+        abrirTela('nova');
+      });
+
+      botoes.lista.addEventListener('click', function () {
+        abrirTela('lista');
+      });
+
+      botoes.disponibilidade.addEventListener('click', function () {
+        abrirTela('disponibilidade');
+      });
+
+      botoes.flat.addEventListener('click', function () {
+        abrirTela('flat');
+      });
+
+      window.abrirTelaAltius = abrirTela;
+    })();
+  </script>
+  <script src="app.js?v=20261116-6"></script>
 </body>
 </html>
