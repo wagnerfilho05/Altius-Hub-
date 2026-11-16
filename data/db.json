@@ -78,15 +78,5 @@
       "acesso": "Orientações disponibilizadas antes da hospedagem"
     }
   ],
-  "reservas": [
-    {
-      "id": 1,
-      "hospede": "Wagner Filho",
-      "canal": "WhatsApp",
-      "entrada": "2026-10-29",
-      "saida": "2026-10-31",
-      "apartamentoId": 1,
-      "status": "Confirmada"
-    }
-  ]
+  "reservas": []
 }
