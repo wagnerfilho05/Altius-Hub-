@@ -55,6 +55,7 @@
     <div class="menu">
       <button id="botaoNova" class="ativo">Nova reserva</button>
       <button id="botaoLista">Reservas cadastradas</button>
+      <button id="botaoDisponibilidade">Consultar disponibilidade</button>
       <button id="botaoFluxo">Fluxo do projeto</button>
     </div>
 
@@ -144,6 +145,14 @@
         <span class="numero-etapa">02</span>
       </div>
 
+      <div class="pesquisa-reservas">
+        <div>
+          <label for="pesquisaHospede">Pesquisar hóspede</label>
+          <input id="pesquisaHospede" type="search" placeholder="Digite o nome do hóspede">
+        </div>
+        <span>Filtra a lista de reservas pelo nome.</span>
+      </div>
+
       <div class="calendario-reservas">
         <div class="calendario-topo">
           <div class="filtro-calendario">
@@ -195,6 +204,37 @@
       </div>
     </section>
 
+    <section id="telaDisponibilidade" class="tela escondida">
+      <div class="titulo-secao">
+        <div>
+          <span class="subtitulo">Disponibilidade</span>
+          <h2>Consultar disponibilidade</h2>
+          <p>Informe o período desejado para verificar quais apartamentos estão livres.</p>
+        </div>
+        <span class="numero-etapa">03</span>
+      </div>
+
+      <form id="formDisponibilidade" class="form-disponibilidade">
+        <div class="linha-formulario">
+          <div class="campo">
+            <label for="consultaEntrada">Check-in</label>
+            <input id="consultaEntrada" type="date" required>
+          </div>
+
+          <div class="campo">
+            <label for="consultaSaida">Check-out</label>
+            <input id="consultaSaida" type="date" required>
+          </div>
+        </div>
+
+        <button type="submit" class="salvar">Verificar disponibilidade</button>
+      </form>
+
+      <div id="resultadoDisponibilidade" class="resultado-disponibilidade">
+        <p class="resultado-inicial">Escolha as datas para consultar todos os apartamentos.</p>
+      </div>
+    </section>
+
     <section id="telaFluxo" class="tela escondida">
       <div class="titulo-secao">
         <div>
@@ -202,7 +242,7 @@
           <h2>Fluxo principal do MVP</h2>
           <p>Resumo das etapas implementadas nesta versão do projeto.</p>
         </div>
-        <span class="numero-etapa">03</span>
+        <span class="numero-etapa">04</span>
       </div>
 
       <div class="fluxo">
@@ -217,6 +257,26 @@
       <p class="aviso">Nesta versão, o sistema cadastra a reserva, verifica conflitos de período e permite consultar as informações da hospedagem.</p>
     </section>
   </main>
+
+  <div id="modalReserva" class="modal-reserva">
+    <div class="modal-fundo" id="fecharModalFundo"></div>
+
+    <div class="modal-conteudo">
+      <button id="fecharModalReserva" class="modal-fechar" type="button">×</button>
+
+      <span class="subtitulo">Reserva</span>
+      <h3 id="modalHospede">Hóspede</h3>
+
+      <div class="modal-dados">
+        <p><strong>Canal:</strong> <span id="modalCanal"></span></p>
+        <p><strong>Apartamento:</strong> <span id="modalApartamento"></span></p>
+        <p><strong>Check-in:</strong> <span id="modalEntrada"></span></p>
+        <p><strong>Check-out:</strong> <span id="modalSaida"></span></p>
+      </div>
+
+      <a id="modalLinkHospedagem" class="modal-link" href="#" target="_blank">Abrir informações da hospedagem</a>
+    </div>
+  </div>
 
   <footer>
     <div>
