@@ -4,6 +4,7 @@ let dataCalendario = new Date();
 let reservaParaExcluir = null;
 
 const botoes = {
+  dashboard: document.getElementById('botaoDashboard'),
   nova: document.getElementById('botaoNova'),
   lista: document.getElementById('botaoLista'),
   disponibilidade: document.getElementById('botaoDisponibilidade'),
@@ -11,6 +12,7 @@ const botoes = {
 };
 
 const telas = {
+  dashboard: document.getElementById('telaDashboard'),
   nova: document.getElementById('telaNova'),
   lista: document.getElementById('telaLista'),
   disponibilidade: document.getElementById('telaDisponibilidade'),
@@ -75,6 +77,10 @@ function mostrarTela(nome) {
   telas[nome].classList.remove('escondida');
   botoes[nome].classList.add('ativo');
 
+  if (nome === 'dashboard') {
+    renderizarDashboard();
+  }
+
   if (nome === 'lista') {
     carregarReservas();
   }
@@ -84,10 +90,19 @@ function mostrarTela(nome) {
   }
 }
 
+botoes.dashboard.addEventListener('click', function () { mostrarTela('dashboard'); });
 botoes.nova.addEventListener('click', function () { mostrarTela('nova'); });
 botoes.lista.addEventListener('click', function () { mostrarTela('lista'); });
 botoes.disponibilidade.addEventListener('click', function () { mostrarTela('disponibilidade'); });
 botoes.flat.addEventListener('click', function () { mostrarTela('flat'); });
+
+document.getElementById('atalhoNovaReserva').addEventListener('click', function () {
+  mostrarTela('nova');
+});
+
+document.getElementById('verTodasReservas').addEventListener('click', function () {
+  mostrarTela('lista');
+});
 
 function formatarData(data) {
   const partes = data.split('-');
@@ -196,6 +211,7 @@ async function carregarApartamentos() {
     preencherApartamentoCalendario();
     renderizarListaFlats();
     renderizarCalendario();
+    renderizarDashboard();
   } catch (erro) {
     mensagem.innerHTML = '<p class="erro">Não foi possível carregar os apartamentos.</p>';
   }
@@ -208,11 +224,124 @@ async function carregarReservas() {
 
     renderizarTabelaReservas(pesquisaHospede.value);
     renderizarCalendario();
+    renderizarDashboard();
   } catch (erro) {
     document.getElementById('listaReservas').innerHTML =
       '<tr><td colspan="7">Erro ao carregar as reservas.</td></tr>';
   }
 }
+
+function renderizarDashboard() {
+  const hoje = dataHojeBrasil();
+  const dataLonga = new Intl.DateTimeFormat('pt-BR', {
+    timeZone: 'America/Fortaleza',
+    weekday: 'long',
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  }).format(new Date());
+
+  document.getElementById('dataDashboard').textContent =
+    dataLonga.charAt(0).toUpperCase() + dataLonga.slice(1);
+
+  let checkins = 0;
+  let checkouts = 0;
+  let ocupados = 0;
+
+  for (let i = 0; i < reservas.length; i++) {
+    if (reservas[i].entrada === hoje) checkins++;
+    if (reservas[i].saida === hoje) checkouts++;
+    if (reservas[i].entrada <= hoje && reservas[i].saida > hoje) ocupados++;
+  }
+
+  document.getElementById('totalCheckinsHoje').textContent = checkins;
+  document.getElementById('totalCheckoutsHoje').textContent = checkouts;
+  document.getElementById('totalOcupadosHoje').textContent = ocupados;
+
+  const proximas = reservas
+    .filter(function (reserva) { return reserva.entrada >= hoje; })
+    .sort(function (a, b) { return a.entrada.localeCompare(b.entrada); })
+    .slice(0, 5);
+
+  const areaCheckins = document.getElementById('proximosCheckins');
+
+  if (proximas.length === 0) {
+    areaCheckins.innerHTML = '<div class="estado-vazio"><strong>Nenhum check-in próximo</strong><span>As próximas reservas aparecerão aqui.</span></div>';
+  } else {
+    let html = '';
+
+    for (let i = 0; i < proximas.length; i++) {
+      html += `
+        <button class="item-dashboard" type="button" onclick="mostrarDetalhesReserva(${proximas[i].id})">
+          <div>
+            <strong>${proximas[i].hospede}</strong>
+            <span>${nomeDoApartamento(proximas[i].apartamentoId)}</span>
+          </div>
+          <div class="item-dashboard-data">
+            <strong>${formatarData(proximas[i].entrada)}</strong>
+            <span>${proximas[i].canal}</span>
+          </div>
+        </button>
+      `;
+    }
+
+    areaCheckins.innerHTML = html;
+  }
+
+  const areaOcupacao = document.getElementById('ocupacaoHoje');
+
+  if (apartamentos.length === 0) {
+    areaOcupacao.innerHTML = '<div class="estado-vazio"><strong>Nenhum flat cadastrado</strong><span>Cadastre um flat para acompanhar a ocupação.</span></div>';
+    return;
+  }
+
+  let htmlOcupacao = '';
+
+  for (let i = 0; i < apartamentos.length; i++) {
+    let reservaAtual = null;
+
+    for (let j = 0; j < reservas.length; j++) {
+      if (
+        reservas[j].apartamentoId === apartamentos[i].id &&
+        reservas[j].entrada <= hoje &&
+        reservas[j].saida > hoje
+      ) {
+        reservaAtual = reservas[j];
+        break;
+      }
+    }
+
+    htmlOcupacao += `
+      <div class="item-ocupacao">
+        <div>
+          <strong>${apartamentos[i].empreendimento} · ${apartamentos[i].numero}</strong>
+          <span>${reservaAtual ? reservaAtual.hospede : 'Disponível hoje'}</span>
+        </div>
+        <span class="sinal-ocupacao ${reservaAtual ? 'ocupado' : 'livre'}">${reservaAtual ? 'Ocupado' : 'Livre'}</span>
+      </div>
+    `;
+  }
+
+  areaOcupacao.innerHTML = htmlOcupacao;
+}
+
+document.getElementById('botaoBuscaGlobal').addEventListener('click', function () {
+  const texto = document.getElementById('buscaGlobal').value.trim();
+
+  if (!texto) return;
+
+  pesquisaHospede.value = texto;
+  mostrarTela('lista');
+  renderizarTabelaReservas(texto);
+  renderizarSugestoesHospede(texto);
+});
+
+document.getElementById('buscaGlobal').addEventListener('keydown', function (evento) {
+  if (evento.key === 'Enter') {
+    evento.preventDefault();
+    document.getElementById('botaoBuscaGlobal').click();
+  }
+});
 
 function procurarReservaDoDia(data, apartamentoId) {
   for (let i = 0; i < reservas.length; i++) {
@@ -388,7 +517,7 @@ function renderizarTabelaReservas(filtro) {
         <td>
           <div class="acoes-tabela">
             <button type="button" class="acao-link" onclick="mostrarDetalhesReserva(${reserva.id})">Ver</button>
-            <button type="button" class="acao-link" onclick="abrirEditarReserva(${reserva.id})">Editar</button>
+            <button type="button" class="botao-editar" onclick="abrirEditarReserva(${reserva.id})">Editar</button>
             <button type="button" class="excluir" onclick="pedirExclusaoReserva(${reserva.id})">Excluir</button>
           </div>
         </td>
@@ -819,7 +948,7 @@ function renderizarListaFlats() {
             <span class="subtitulo">Apartamento ${apartamento.numero}</span>
             <h4>${apartamento.empreendimento}</h4>
           </div>
-          <button type="button" class="acao-link" onclick="abrirEditarFlat(${apartamento.id})">Editar</button>
+          <button type="button" class="botao-editar" onclick="abrirEditarFlat(${apartamento.id})">Editar</button>
         </div>
         <p>${apartamento.localizacao}</p>
         <div class="flat-horarios">
