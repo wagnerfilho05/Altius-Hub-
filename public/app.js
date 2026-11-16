@@ -418,6 +418,35 @@ function renderizarSugestoesHospede(texto) {
       renderizarTabelaReservas(nome);
       sugestoesHospede.innerHTML = '';
       sugestoesHospede.classList.remove('aberto');
+
+      let reservaSelecionada = null;
+
+      for (let j = 0; j < reservas.length; j++) {
+        if (reservas[j].hospede === nome) {
+          reservaSelecionada = reservas[j];
+          break;
+        }
+      }
+
+      if (reservaSelecionada) {
+        apartamentoCalendario.value = reservaSelecionada.apartamentoId;
+
+        const partesData = reservaSelecionada.entrada.split('-');
+        const anoReserva = Number(partesData[0]);
+        const mesReserva = Number(partesData[1]) - 1;
+
+        dataCalendario = new Date(anoReserva, mesReserva, 1);
+        renderizarCalendario();
+
+        setTimeout(function () {
+          calendario.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+          });
+
+          mostrarDetalhesReserva(reservaSelecionada.id);
+        }, 100);
+      }
     });
 
     sugestoesHospede.appendChild(botao);
