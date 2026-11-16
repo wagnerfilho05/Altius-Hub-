@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastrar flat - Altius Hub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="topo-conteudo">
+      <div class="marca">
+        <div class="marca-sigla">AH</div>
+        <div>
+          <span class="etiqueta">Cadastro de imóvel</span>
+          <h1>Cadastrar flat</h1>
+          <p>Adicione um novo apartamento ao Altius Hub</p>
+        </div>
+      </div>
+
+      <div class="topo-info">
+        <strong>Altius Hub</strong>
+        <span>Gerenciamento de reservas</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="tela cartao-hospedagem">
+      <div class="titulo-secao">
+        <div>
+          <span class="subtitulo">Novo flat</span>
+          <h2>Dados do apartamento</h2>
+          <p>Depois do cadastro, o flat aparecerá automaticamente nas reservas e consultas.</p>
+        </div>
+        <span class="numero-etapa">+</span>
+      </div>
+
+      <form id="formCadastroFlat">
+        <div class="campo campo-completo">
+          <label for="empreendimento">Empreendimento</label>
+          <input id="empreendimento" type="text" placeholder="Ex.: Boulevard Plaza" required>
+        </div>
+
+        <div class="campo campo-completo">
+          <label for="numero">Número do flat</label>
+          <input id="numero" type="text" placeholder="Ex.: 305" required>
+        </div>
+
+        <div class="campo campo-completo">
+          <label for="localizacao">Localização</label>
+          <input id="localizacao" type="text" placeholder="Endereço do empreendimento" required>
+        </div>
+
+        <div class="linha-formulario">
+          <div class="campo">
+            <label for="checkin">Horário de check-in</label>
+            <input id="checkin" type="time" value="14:00" required>
+          </div>
+
+          <div class="campo">
+            <label for="checkout">Horário de check-out</label>
+            <input id="checkout" type="time" value="11:00" required>
+          </div>
+        </div>
+
+        <button type="submit" class="salvar">Cadastrar flat</button>
+      </form>
+
+      <div id="mensagemCadastroFlat"></div>
+
+      <a class="voltar" href="/">← Voltar para o sistema</a>
+    </section>
+  </main>
+
+  <footer>
+    <div>
+      <strong>Altius Hub</strong>
+      <span>Cadastro de flats</span>
+    </div>
+    <span>Sistemas de Informação</span>
+  </footer>
+
+  <script>
+    const formulario = document.getElementById('formCadastroFlat');
+    const mensagem = document.getElementById('mensagemCadastroFlat');
+
+    formulario.addEventListener('submit', async function (evento) {
+      evento.preventDefault();
+      mensagem.innerHTML = '';
+
+      const dados = {
+        empreendimento: document.getElementById('empreendimento').value.trim(),
+        numero: document.getElementById('numero').value.trim(),
+        localizacao: document.getElementById('localizacao').value.trim(),
+        checkin: document.getElementById('checkin').value,
+        checkout: document.getElementById('checkout').value
+      };
+
+      try {
+        const resposta = await fetch('/api/apartamentos', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(dados)
+        });
+
+        const resultado = await resposta.json();
+
+        if (!resposta.ok) {
+          mensagem.innerHTML = '<p class="erro">' + resultado.erro + '</p>';
+          return;
+        }
+
+        mensagem.innerHTML = '<p class="sucesso">Flat cadastrado com sucesso.</p>';
+        formulario.reset();
+        document.getElementById('checkin').value = '14:00';
+        document.getElementById('checkout').value = '11:00';
+      } catch (erro) {
+        mensagem.innerHTML = '<p class="erro">Não foi possível cadastrar o flat.</p>';
+      }
+    });
+  </script>
+</body>
+</html>
