@@ -7,19 +7,15 @@ const botaoNova = document.getElementById('botaoNova');
 const botaoLista = document.getElementById('botaoLista');
 const botaoDisponibilidade = document.getElementById('botaoDisponibilidade');
 const botaoFlat = document.getElementById('botaoFlat');
-const botaoFluxo = document.getElementById('botaoFluxo');
 const telaNova = document.getElementById('telaNova');
 const telaLista = document.getElementById('telaLista');
 const telaDisponibilidade = document.getElementById('telaDisponibilidade');
 const telaFlat = document.getElementById('telaFlat');
-const telaFluxo = document.getElementById('telaFluxo');
 const formulario = document.getElementById('formReserva');
 const mensagem = document.getElementById('mensagem');
 
 const formFlat = document.getElementById('formFlat');
 const mensagemFlat = document.getElementById('mensagemFlat');
-const totalApartamentos = document.getElementById('totalApartamentos');
-const totalEmpreendimentos = document.getElementById('totalEmpreendimentos');
 
 const apartamentoCalendario = document.getElementById('apartamentoCalendario');
 const calendario = document.getElementById('calendario');
@@ -44,13 +40,11 @@ function mostrarTela(tela) {
   telaLista.classList.add('escondida');
   telaDisponibilidade.classList.add('escondida');
   telaFlat.classList.add('escondida');
-  telaFluxo.classList.add('escondida');
 
   botaoNova.classList.remove('ativo');
   botaoLista.classList.remove('ativo');
   botaoDisponibilidade.classList.remove('ativo');
   botaoFlat.classList.remove('ativo');
-  botaoFluxo.classList.remove('ativo');
 
   if (tela === 'nova') {
     telaNova.classList.remove('escondida');
@@ -72,10 +66,6 @@ function mostrarTela(tela) {
     botaoFlat.classList.add('ativo');
   }
 
-  if (tela === 'fluxo') {
-    telaFluxo.classList.remove('escondida');
-    botaoFluxo.classList.add('ativo');
-  }
 }
 
 botaoNova.addEventListener('click', function () {
@@ -95,9 +85,6 @@ botaoFlat.addEventListener('click', function () {
   mostrarTela('flat');
 });
 
-botaoFluxo.addEventListener('click', function () {
-  mostrarTela('fluxo');
-});
 
 function formatarData(data) {
   const partes = data.split('-');
@@ -282,20 +269,6 @@ mesSeguinte.addEventListener('click', function () {
   renderizarCalendario();
 });
 
-function atualizarResumoApartamentos() {
-  totalApartamentos.textContent = apartamentos.length;
-
-  const empreendimentos = [];
-
-  for (let i = 0; i < apartamentos.length; i++) {
-    if (!empreendimentos.includes(apartamentos[i].empreendimento)) {
-      empreendimentos.push(apartamentos[i].empreendimento);
-    }
-  }
-
-  totalEmpreendimentos.textContent = empreendimentos.length;
-}
-
 async function carregarApartamentos() {
   const select = document.getElementById('apartamento');
   const valorReserva = select.value;
@@ -326,7 +299,6 @@ async function carregarApartamentos() {
       apartamentoCalendario.value = valorCalendario;
     }
 
-    atualizarResumoApartamentos();
     renderizarCalendario();
   } catch (erro) {
     select.innerHTML = '<option value="">Erro ao carregar</option>';
