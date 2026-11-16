@@ -5,9 +5,11 @@ let dataCalendario = new Date();
 
 const botaoNova = document.getElementById('botaoNova');
 const botaoLista = document.getElementById('botaoLista');
+const botaoDisponibilidade = document.getElementById('botaoDisponibilidade');
 const botaoFluxo = document.getElementById('botaoFluxo');
 const telaNova = document.getElementById('telaNova');
 const telaLista = document.getElementById('telaLista');
+const telaDisponibilidade = document.getElementById('telaDisponibilidade');
 const telaFluxo = document.getElementById('telaFluxo');
 const formulario = document.getElementById('formReserva');
 const mensagem = document.getElementById('mensagem');
@@ -17,14 +19,26 @@ const calendario = document.getElementById('calendario');
 const tituloMesCalendario = document.getElementById('tituloMesCalendario');
 const mesAnterior = document.getElementById('mesAnterior');
 const mesSeguinte = document.getElementById('mesSeguinte');
+const pesquisaHospede = document.getElementById('pesquisaHospede');
+
+const formDisponibilidade = document.getElementById('formDisponibilidade');
+const consultaEntrada = document.getElementById('consultaEntrada');
+const consultaSaida = document.getElementById('consultaSaida');
+const resultadoDisponibilidade = document.getElementById('resultadoDisponibilidade');
+
+const modalReserva = document.getElementById('modalReserva');
+const fecharModalReserva = document.getElementById('fecharModalReserva');
+const fecharModalFundo = document.getElementById('fecharModalFundo');
 
 function mostrarTela(tela) {
   telaNova.classList.add('escondida');
   telaLista.classList.add('escondida');
+  telaDisponibilidade.classList.add('escondida');
   telaFluxo.classList.add('escondida');
 
   botaoNova.classList.remove('ativo');
   botaoLista.classList.remove('ativo');
+  botaoDisponibilidade.classList.remove('ativo');
   botaoFluxo.classList.remove('ativo');
 
   if (tela === 'nova') {
@@ -35,6 +49,11 @@ function mostrarTela(tela) {
   if (tela === 'lista') {
     telaLista.classList.remove('escondida');
     botaoLista.classList.add('ativo');
+  }
+
+  if (tela === 'disponibilidade') {
+    telaDisponibilidade.classList.remove('escondida');
+    botaoDisponibilidade.classList.add('ativo');
   }
 
   if (tela === 'fluxo') {
@@ -50,6 +69,10 @@ botaoNova.addEventListener('click', function () {
 botaoLista.addEventListener('click', function () {
   mostrarTela('lista');
   carregarReservas();
+});
+
+botaoDisponibilidade.addEventListener('click', function () {
+  mostrarTela('disponibilidade');
 });
 
 botaoFluxo.addEventListener('click', function () {
@@ -180,8 +203,16 @@ function renderizarCalendario() {
       classeHoje = ' hoje';
     }
 
+    let classeClique = '';
+    let acaoClique = '';
+
+    if (reserva) {
+      classeClique = ' clicavel';
+      acaoClique = ' onclick="mostrarDetalhesReserva(' + reserva.id + ')"';
+    }
+
     calendario.innerHTML += `
-      <div class="dia-calendario ${classe}${classeHoje}" title="${detalhe}">
+      <div class="dia-calendario ${classe}${classeHoje}${classeClique}"${acaoClique} title="${detalhe}">
         <span class="numero-dia">${dia}</span>
         ${siglaCanal ? '<span class="sigla-canal" title="' + reserva.canal + '">' + siglaCanal + '</span>' : ''}
         <span class="estado-dia">${estado}</span>
@@ -249,6 +280,54 @@ async function carregarApartamentos() {
   }
 }
 
+function nomeDoApartamento(apartamentoId) {
+  for (let i = 0; i < apartamentos.length; i++) {
+    if (apartamentos[i].id === apartamentoId) {
+      return apartamentos[i].empreendimento + ' - Apto ' + apartamentos[i].numero;
+    }
+  }
+
+  return '-';
+}
+
+function renderizarTabelaReservas(filtro) {
+  const corpoTabela = document.getElementById('listaReservas');
+  const textoPesquisa = (filtro || '').trim().toLowerCase();
+  const reservasFiltradas = [];
+
+  for (let i = 0; i < reservas.length; i++) {
+    if (
+      textoPesquisa === '' ||
+      reservas[i].hospede.toLowerCase().includes(textoPesquisa)
+    ) {
+      reservasFiltradas.push(reservas[i]);
+    }
+  }
+
+  corpoTabela.innerHTML = '';
+
+  if (reservasFiltradas.length === 0) {
+    corpoTabela.innerHTML = '<tr><td colspan="7">Nenhuma reserva encontrada.</td></tr>';
+    return;
+  }
+
+  for (let i = 0; i < reservasFiltradas.length; i++) {
+    const reserva = reservasFiltradas[i];
+
+    corpoTabela.innerHTML += `
+      <tr>
+        <td>${reserva.hospede}</td>
+        <td>${reserva.canal}</td>
+        <td>${formatarData(reserva.entrada)}</td>
+        <td>${formatarData(reserva.saida)}</td>
+        <td>${nomeDoApartamento(reserva.apartamentoId)}</td>
+        <td><a href="hospedagem.html?id=${reserva.id}" target="_blank">Abrir</a></td>
+        <td><button class="excluir" onclick="excluirReserva(${reserva.id})">Excluir</button></td>
+      </tr>
+    `;
+  }
+}
+
 async function carregarReservas() {
   const corpoTabela = document.getElementById('listaReservas');
 
@@ -256,42 +335,135 @@ async function carregarReservas() {
     const resposta = await fetch('/api/reservas');
     reservas = await resposta.json();
 
-    corpoTabela.innerHTML = '';
-
-    if (reservas.length === 0) {
-      corpoTabela.innerHTML = '<tr><td colspan="7">Nenhuma reserva cadastrada.</td></tr>';
-      renderizarCalendario();
-      return;
-    }
-
-    for (let i = 0; i < reservas.length; i++) {
-      const reserva = reservas[i];
-      let nomeApartamento = '-';
-
-      for (let j = 0; j < apartamentos.length; j++) {
-        if (apartamentos[j].id === reserva.apartamentoId) {
-          nomeApartamento = apartamentos[j].empreendimento + ' - Apto ' + apartamentos[j].numero;
-        }
-      }
-
-      corpoTabela.innerHTML += `
-        <tr>
-          <td>${reserva.hospede}</td>
-          <td>${reserva.canal}</td>
-          <td>${formatarData(reserva.entrada)}</td>
-          <td>${formatarData(reserva.saida)}</td>
-          <td>${nomeApartamento}</td>
-          <td><a href="hospedagem.html?id=${reserva.id}" target="_blank">Abrir</a></td>
-          <td><button class="excluir" onclick="excluirReserva(${reserva.id})">Excluir</button></td>
-        </tr>
-      `;
-    }
-
+    renderizarTabelaReservas(pesquisaHospede.value);
     renderizarCalendario();
   } catch (erro) {
     corpoTabela.innerHTML = '<tr><td colspan="7">Erro ao carregar as reservas.</td></tr>';
   }
 }
+
+pesquisaHospede.addEventListener('input', function () {
+  renderizarTabelaReservas(pesquisaHospede.value);
+});
+
+function mostrarDetalhesReserva(id) {
+  let reservaEncontrada = null;
+
+  for (let i = 0; i < reservas.length; i++) {
+    if (reservas[i].id === id) {
+      reservaEncontrada = reservas[i];
+    }
+  }
+
+  if (!reservaEncontrada) {
+    return;
+  }
+
+  document.getElementById('modalHospede').textContent = reservaEncontrada.hospede;
+  document.getElementById('modalCanal').textContent = reservaEncontrada.canal;
+  document.getElementById('modalApartamento').textContent = nomeDoApartamento(reservaEncontrada.apartamentoId);
+  document.getElementById('modalEntrada').textContent = formatarData(reservaEncontrada.entrada);
+  document.getElementById('modalSaida').textContent = formatarData(reservaEncontrada.saida);
+  document.getElementById('modalLinkHospedagem').href = 'hospedagem.html?id=' + reservaEncontrada.id;
+
+  modalReserva.classList.add('aberto');
+}
+
+function fecharDetalhesReserva() {
+  modalReserva.classList.remove('aberto');
+}
+
+fecharModalReserva.addEventListener('click', fecharDetalhesReserva);
+fecharModalFundo.addEventListener('click', fecharDetalhesReserva);
+
+document.addEventListener('keydown', function (evento) {
+  if (evento.key === 'Escape') {
+    fecharDetalhesReserva();
+  }
+});
+
+function apartamentoEstaLivre(apartamentoId, entrada, saida) {
+  for (let i = 0; i < reservas.length; i++) {
+    const reserva = reservas[i];
+
+    if (
+      reserva.apartamentoId === apartamentoId &&
+      entrada < reserva.saida &&
+      saida > reserva.entrada
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+formDisponibilidade.addEventListener('submit', async function (evento) {
+  evento.preventDefault();
+
+  const entrada = consultaEntrada.value;
+  const saida = consultaSaida.value;
+
+  if (!entrada || !saida) {
+    resultadoDisponibilidade.innerHTML = '<p class="resultado-erro">Preencha as duas datas.</p>';
+    return;
+  }
+
+  if (entrada >= saida) {
+    resultadoDisponibilidade.innerHTML = '<p class="resultado-erro">O check-out precisa ser depois do check-in.</p>';
+    return;
+  }
+
+  try {
+    const resposta = await fetch('/api/reservas');
+    reservas = await resposta.json();
+
+    const disponiveis = [];
+
+    for (let i = 0; i < apartamentos.length; i++) {
+      const apartamento = apartamentos[i];
+
+      if (apartamentoEstaLivre(apartamento.id, entrada, saida)) {
+        disponiveis.push(apartamento);
+      }
+    }
+
+    if (disponiveis.length === 0) {
+      resultadoDisponibilidade.innerHTML = `
+        <div class="sem-disponibilidade">
+          <strong>Nenhum apartamento disponível</strong>
+          <p>Não existe vaga entre ${formatarData(entrada)} e ${formatarData(saida)}.</p>
+        </div>
+      `;
+      return;
+    }
+
+    let html = `
+      <div class="resultado-titulo">
+        <strong>${disponiveis.length} apartamento(s) disponível(is)</strong>
+        <span>Período: ${formatarData(entrada)} até ${formatarData(saida)}</span>
+      </div>
+      <div class="apartamentos-disponiveis">
+    `;
+
+    for (let i = 0; i < disponiveis.length; i++) {
+      html += `
+        <div class="apartamento-disponivel">
+          <span>Livre no período</span>
+          <strong>${disponiveis[i].empreendimento}</strong>
+          <p>Apartamento ${disponiveis[i].numero}</p>
+        </div>
+      `;
+    }
+
+    html += '</div>';
+    resultadoDisponibilidade.innerHTML = html;
+  } catch (erro) {
+    resultadoDisponibilidade.innerHTML = '<p class="resultado-erro">Não foi possível consultar a disponibilidade.</p>';
+  }
+});
+
+window.mostrarDetalhesReserva = mostrarDetalhesReserva;
 
 formulario.addEventListener('submit', async function (evento) {
   evento.preventDefault();
