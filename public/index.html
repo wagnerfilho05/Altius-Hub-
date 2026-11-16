@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Altius Hub</title>
-  <link rel="stylesheet" href="style.css?v=20261116-5">
+  <link rel="stylesheet" href="style.css?v=20261116-6">
 </head>
 <body>
   <header class="topo">
@@ -22,13 +22,83 @@
 
   <main>
     <div class="menu">
-      <button id="botaoNova" type="button" class="ativo"><span class="icone-menu">＋</span> Nova reserva</button>
+      <button id="botaoDashboard" type="button" class="ativo"><span class="icone-menu">⌂</span> Visão geral</button>
+      <button id="botaoNova" type="button"><span class="icone-menu">＋</span> Nova reserva</button>
       <button id="botaoLista" type="button"><span class="icone-menu">▦</span> Reservas</button>
       <button id="botaoDisponibilidade" type="button"><span class="icone-menu">⌕</span> Disponibilidade</button>
       <button id="botaoFlat" type="button"><span class="icone-menu">◇</span> Flats</button>
     </div>
 
-    <section id="telaNova" class="tela">
+    <section id="telaDashboard" class="tela">
+      <div class="dashboard-cabecalho">
+        <div>
+          <span class="subtitulo">Visão geral</span>
+          <h2 id="saudacaoDashboard">Operação de hoje</h2>
+          <p id="dataDashboard"></p>
+        </div>
+        <button id="atalhoNovaReserva" type="button" class="salvar">+ Nova reserva</button>
+      </div>
+
+      <div class="dashboard-indicadores">
+        <div class="indicador-dashboard">
+          <span class="indicador-icone">↓</span>
+          <div>
+            <strong id="totalCheckinsHoje">0</strong>
+            <span>Check-ins hoje</span>
+          </div>
+        </div>
+        <div class="indicador-dashboard">
+          <span class="indicador-icone">↑</span>
+          <div>
+            <strong id="totalCheckoutsHoje">0</strong>
+            <span>Check-outs hoje</span>
+          </div>
+        </div>
+        <div class="indicador-dashboard">
+          <span class="indicador-icone">●</span>
+          <div>
+            <strong id="totalOcupadosHoje">0</strong>
+            <span>Flats ocupados</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="busca-global">
+        <div>
+          <span class="subtitulo">Busca rápida</span>
+          <h3>Encontrar hóspede</h3>
+        </div>
+        <div class="busca-global-controles">
+          <input id="buscaGlobal" type="search" placeholder="Digite o nome do hóspede">
+          <button id="botaoBuscaGlobal" type="button">Pesquisar</button>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="bloco-dashboard">
+          <div class="bloco-dashboard-titulo">
+            <div>
+              <span class="subtitulo">Agenda</span>
+              <h3>Próximos check-ins</h3>
+            </div>
+            <button id="verTodasReservas" type="button" class="link-botao">Ver reservas</button>
+          </div>
+          <div id="proximosCheckins" class="lista-dashboard"></div>
+        </div>
+
+        <div class="bloco-dashboard">
+          <div class="bloco-dashboard-titulo">
+            <div>
+              <span class="subtitulo">Agora</span>
+              <h3>Ocupação de hoje</h3>
+            </div>
+          </div>
+          <div id="ocupacaoHoje" class="lista-dashboard ocupacao-dashboard"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="telaNova" class="tela escondida">
       <div class="titulo-secao">
         <div>
           <span class="subtitulo">Cadastro</span>
@@ -386,6 +456,6 @@
     <span class="rodape-marca">Altius Flats</span>
   </footer>
 
-  <script src="app.js?v=20261116-9"></script>
+  <script src="app.js?v=20261116-10"></script>
 </body>
 </html>
