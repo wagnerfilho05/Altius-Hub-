@@ -150,10 +150,28 @@ function renderizarCalendario() {
     let estado = 'Livre';
     let detalhe = '';
 
+    let siglaCanal = '';
+
     if (reserva) {
       classe = 'ocupado';
       estado = 'Reservado';
       detalhe = reserva.hospede;
+
+      if (reserva.canal === 'WhatsApp') {
+        siglaCanal = 'W';
+      }
+
+      if (reserva.canal === 'Instagram') {
+        siglaCanal = 'I';
+      }
+
+      if (reserva.canal === 'Booking') {
+        siglaCanal = 'B';
+      }
+
+      if (reserva.canal === 'Airbnb') {
+        siglaCanal = 'A';
+      }
     }
 
     let classeHoje = '';
@@ -165,6 +183,7 @@ function renderizarCalendario() {
     calendario.innerHTML += `
       <div class="dia-calendario ${classe}${classeHoje}" title="${detalhe}">
         <span class="numero-dia">${dia}</span>
+        ${siglaCanal ? '<span class="sigla-canal" title="' + reserva.canal + '">' + siglaCanal + '</span>' : ''}
         <span class="estado-dia">${estado}</span>
         ${detalhe ? '<small>' + detalhe + '</small>' : ''}
       </div>
