@@ -9,11 +9,15 @@
 <body>
   <header class="topo">
     <div class="topo-conteudo">
-      <div>
-        <span class="etiqueta">MVP acadêmico</span>
-        <h1>Altius Hub</h1>
-        <p>Gerenciamento de reservas e atendimento ao hóspede</p>
+      <div class="marca">
+        <div class="marca-sigla">AH</div>
+        <div>
+          <span class="etiqueta">MVP acadêmico</span>
+          <h1>Altius Hub</h1>
+          <p>Gerenciamento de reservas e atendimento ao hóspede</p>
+        </div>
       </div>
+
       <div class="topo-info">
         <strong>Sistemas de Informação</strong>
         <span>Projeto Integrador</span>
@@ -22,6 +26,32 @@
   </header>
 
   <main>
+    <section class="painel-resumo">
+      <div class="resumo-item">
+        <span class="resumo-numero">7</span>
+        <div>
+          <strong>Apartamentos</strong>
+          <small>cadastrados no MVP</small>
+        </div>
+      </div>
+
+      <div class="resumo-item">
+        <span class="resumo-numero">2</span>
+        <div>
+          <strong>Empreendimentos</strong>
+          <small>Boulevard e Sirius</small>
+        </div>
+      </div>
+
+      <div class="resumo-item">
+        <span class="resumo-numero">4</span>
+        <div>
+          <strong>Canais</strong>
+          <small>de origem da reserva</small>
+        </div>
+      </div>
+    </section>
+
     <div class="menu">
       <button id="botaoNova" class="ativo">Nova reserva</button>
       <button id="botaoLista">Reservas cadastradas</button>
@@ -31,53 +61,75 @@
     <section id="telaNova" class="tela">
       <div class="titulo-secao">
         <div>
+          <span class="subtitulo">Cadastro</span>
           <h2>Nova reserva</h2>
           <p>Preencha os dados abaixo para registrar uma nova hospedagem.</p>
         </div>
         <span class="numero-etapa">01</span>
       </div>
 
-      <form id="formReserva">
-        <div class="campo campo-completo">
-          <label for="hospede">Nome do hóspede</label>
-          <input id="hospede" type="text" placeholder="Ex.: João da Silva" required>
-        </div>
-
-        <div class="campo campo-completo">
-          <label for="canal">Canal da reserva</label>
-          <select id="canal" required>
-            <option value="">Selecione o canal</option>
-            <option value="WhatsApp">WhatsApp</option>
-            <option value="Instagram">Instagram</option>
-            <option value="Airbnb">Airbnb</option>
-            <option value="Booking">Booking</option>
-          </select>
-        </div>
-
-        <div class="linha-formulario">
-          <div class="campo">
-            <label for="entrada">Check-in</label>
-            <input id="entrada" type="date" required>
+      <div class="conteudo-reserva">
+        <form id="formReserva">
+          <div class="campo campo-completo">
+            <label for="hospede">Nome do hóspede</label>
+            <input id="hospede" type="text" placeholder="Ex.: João da Silva" required>
           </div>
 
-          <div class="campo">
-            <label for="saida">Check-out</label>
-            <input id="saida" type="date" required>
+          <div class="campo campo-completo">
+            <label for="canal">Canal da reserva</label>
+            <select id="canal" required>
+              <option value="">Selecione o canal</option>
+              <option value="WhatsApp">WhatsApp</option>
+              <option value="Instagram">Instagram</option>
+              <option value="Airbnb">Airbnb</option>
+              <option value="Booking">Booking</option>
+            </select>
           </div>
-        </div>
 
-        <div class="campo campo-completo">
-          <label for="apartamento">Apartamento</label>
-          <select id="apartamento" required>
-            <option value="">Carregando apartamentos...</option>
-          </select>
-        </div>
+          <div class="linha-formulario">
+            <div class="campo">
+              <label for="entrada">Check-in</label>
+              <input id="entrada" type="date" required>
+            </div>
 
-        <div class="acoes-formulario">
-          <button type="submit" class="salvar">Cadastrar reserva</button>
-          <span>O sistema verifica conflito de datas antes de salvar.</span>
-        </div>
-      </form>
+            <div class="campo">
+              <label for="saida">Check-out</label>
+              <input id="saida" type="date" required>
+            </div>
+          </div>
+
+          <div class="campo campo-completo">
+            <label for="apartamento">Apartamento</label>
+            <select id="apartamento" required>
+              <option value="">Carregando apartamentos...</option>
+            </select>
+          </div>
+
+          <div class="acoes-formulario">
+            <button type="submit" class="salvar">Cadastrar reserva</button>
+          </div>
+        </form>
+
+        <aside class="painel-ajuda">
+          <h3>Antes de cadastrar</h3>
+          <p>O sistema faz uma verificação simples antes de salvar a reserva.</p>
+
+          <div class="item-ajuda">
+            <span>1</span>
+            <p>Confere se todos os campos foram preenchidos.</p>
+          </div>
+
+          <div class="item-ajuda">
+            <span>2</span>
+            <p>Verifica se o check-out acontece depois do check-in.</p>
+          </div>
+
+          <div class="item-ajuda">
+            <span>3</span>
+            <p>Evita duas reservas no mesmo apartamento e período.</p>
+          </div>
+        </aside>
+      </div>
 
       <div id="mensagem"></div>
     </section>
@@ -85,6 +137,7 @@
     <section id="telaLista" class="tela escondida">
       <div class="titulo-secao">
         <div>
+          <span class="subtitulo">Consulta</span>
           <h2>Reservas cadastradas</h2>
           <p>Consulte as reservas registradas e abra as informações da hospedagem.</p>
         </div>
@@ -112,6 +165,7 @@
     <section id="telaFluxo" class="tela escondida">
       <div class="titulo-secao">
         <div>
+          <span class="subtitulo">Processo</span>
           <h2>Fluxo principal do MVP</h2>
           <p>Resumo das etapas implementadas nesta versão do projeto.</p>
         </div>
@@ -132,8 +186,11 @@
   </main>
 
   <footer>
-    <strong>Altius Hub</strong>
-    <span>Projeto acadêmico - Sistemas de Informação</span>
+    <div>
+      <strong>Altius Hub</strong>
+      <span>Projeto acadêmico</span>
+    </div>
+    <span>Sistemas de Informação</span>
   </footer>
 
   <script src="app.js"></script>
