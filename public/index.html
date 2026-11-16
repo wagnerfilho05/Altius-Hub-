@@ -7,9 +7,18 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Altius Hub</h1>
-    <p>Gerenciamento de reservas e atendimento ao hóspede</p>
+  <header class="topo">
+    <div class="topo-conteudo">
+      <div>
+        <span class="etiqueta">MVP acadêmico</span>
+        <h1>Altius Hub</h1>
+        <p>Gerenciamento de reservas e atendimento ao hóspede</p>
+      </div>
+      <div class="topo-info">
+        <strong>Sistemas de Informação</strong>
+        <span>Projeto Integrador</span>
+      </div>
+    </div>
   </header>
 
   <main>
@@ -20,41 +29,67 @@
     </div>
 
     <section id="telaNova" class="tela">
-      <h2>Nova reserva</h2>
-      <p>Preencha os dados para cadastrar uma reserva.</p>
+      <div class="titulo-secao">
+        <div>
+          <h2>Nova reserva</h2>
+          <p>Preencha os dados abaixo para registrar uma nova hospedagem.</p>
+        </div>
+        <span class="numero-etapa">01</span>
+      </div>
 
       <form id="formReserva">
-        <label for="hospede">Nome do hóspede</label>
-        <input id="hospede" type="text" required>
+        <div class="campo campo-completo">
+          <label for="hospede">Nome do hóspede</label>
+          <input id="hospede" type="text" placeholder="Ex.: João da Silva" required>
+        </div>
 
-        <label for="canal">Canal da reserva</label>
-        <select id="canal" required>
-          <option value="">Selecione</option>
-          <option value="WhatsApp">WhatsApp</option>
-          <option value="Instagram">Instagram</option>
-          <option value="Airbnb">Airbnb</option>
-          <option value="Booking">Booking</option>
-        </select>
+        <div class="campo campo-completo">
+          <label for="canal">Canal da reserva</label>
+          <select id="canal" required>
+            <option value="">Selecione o canal</option>
+            <option value="WhatsApp">WhatsApp</option>
+            <option value="Instagram">Instagram</option>
+            <option value="Airbnb">Airbnb</option>
+            <option value="Booking">Booking</option>
+          </select>
+        </div>
 
-        <label for="entrada">Check-in</label>
-        <input id="entrada" type="date" required>
+        <div class="linha-formulario">
+          <div class="campo">
+            <label for="entrada">Check-in</label>
+            <input id="entrada" type="date" required>
+          </div>
 
-        <label for="saida">Check-out</label>
-        <input id="saida" type="date" required>
+          <div class="campo">
+            <label for="saida">Check-out</label>
+            <input id="saida" type="date" required>
+          </div>
+        </div>
 
-        <label for="apartamento">Apartamento</label>
-        <select id="apartamento" required>
-          <option value="">Carregando apartamentos...</option>
-        </select>
+        <div class="campo campo-completo">
+          <label for="apartamento">Apartamento</label>
+          <select id="apartamento" required>
+            <option value="">Carregando apartamentos...</option>
+          </select>
+        </div>
 
-        <button type="submit" class="salvar">Cadastrar reserva</button>
+        <div class="acoes-formulario">
+          <button type="submit" class="salvar">Cadastrar reserva</button>
+          <span>O sistema verifica conflito de datas antes de salvar.</span>
+        </div>
       </form>
 
       <div id="mensagem"></div>
     </section>
 
     <section id="telaLista" class="tela escondida">
-      <h2>Reservas cadastradas</h2>
+      <div class="titulo-secao">
+        <div>
+          <h2>Reservas cadastradas</h2>
+          <p>Consulte as reservas registradas e abra as informações da hospedagem.</p>
+        </div>
+        <span class="numero-etapa">02</span>
+      </div>
 
       <div class="tabela">
         <table>
@@ -75,21 +110,30 @@
     </section>
 
     <section id="telaFluxo" class="tela escondida">
-      <h2>Fluxo principal</h2>
-      <ol>
-        <li>Receber a reserva ou solicitação.</li>
-        <li>Verificar os dados e o canal.</li>
-        <li>Verificar a disponibilidade do apartamento.</li>
-        <li>Confirmar e registrar a reserva.</li>
-        <li>Associar a reserva ao apartamento.</li>
-        <li>Disponibilizar as informações da hospedagem ao hóspede.</li>
-      </ol>
-      <p class="aviso">Nesta versão, o sistema cadastra a reserva e verifica se já existe outra reserva no mesmo apartamento e período.</p>
+      <div class="titulo-secao">
+        <div>
+          <h2>Fluxo principal do MVP</h2>
+          <p>Resumo das etapas implementadas nesta versão do projeto.</p>
+        </div>
+        <span class="numero-etapa">03</span>
+      </div>
+
+      <div class="fluxo">
+        <div class="passo"><span>1</span><p>Receber a reserva ou solicitação.</p></div>
+        <div class="passo"><span>2</span><p>Verificar os dados e o canal.</p></div>
+        <div class="passo"><span>3</span><p>Verificar a disponibilidade do apartamento.</p></div>
+        <div class="passo"><span>4</span><p>Confirmar e registrar a reserva.</p></div>
+        <div class="passo"><span>5</span><p>Associar a reserva ao apartamento.</p></div>
+        <div class="passo"><span>6</span><p>Disponibilizar as informações da hospedagem.</p></div>
+      </div>
+
+      <p class="aviso">Nesta versão, o sistema cadastra a reserva, verifica conflitos de período e permite consultar as informações da hospedagem.</p>
     </section>
   </main>
 
   <footer>
-    Projeto acadêmico - Sistemas de Informação
+    <strong>Altius Hub</strong>
+    <span>Projeto acadêmico - Sistemas de Informação</span>
   </footer>
 
   <script src="app.js"></script>
