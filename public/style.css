@@ -1214,3 +1214,353 @@ footer div span {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* =========================================================
+   Tema visual Altius Flats - azul marinho + dourado
+   ========================================================= */
+:root {
+  --azul-escuro: #0d1830;
+  --azul: #162846;
+  --azul-claro: #28466f;
+  --dourado: #d3b46f;
+  --dourado-claro: #ead9a8;
+  --fundo: #f2f4f7;
+  --branco: #ffffff;
+  --borda: #d9dee6;
+  --texto: #202a36;
+  --texto-claro: #6e7783;
+  --sombra-altius: 0 14px 34px rgba(13, 24, 48, 0.09);
+}
+
+body {
+  background:
+    radial-gradient(circle at 8% 0%, rgba(211, 180, 111, 0.10), transparent 24%),
+    linear-gradient(180deg, #f7f8fa 0%, #eef1f5 100%);
+  color: var(--texto);
+}
+
+.topo {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 82% 10%, rgba(211, 180, 111, 0.10), transparent 25%),
+    linear-gradient(135deg, #0b152b 0%, #12223f 58%, #182d4e 100%);
+  color: #fff;
+  border-bottom: 1px solid rgba(211, 180, 111, 0.32);
+  box-shadow: 0 8px 28px rgba(13, 24, 48, 0.18);
+}
+
+.topo::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(211, 180, 111, 0.78), transparent);
+}
+
+.topo-conteudo {
+  min-height: 156px;
+  padding: 30px 0;
+}
+
+.marca {
+  width: 100%;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.marca-texto {
+  min-width: 0;
+}
+
+.etiqueta {
+  color: var(--dourado-claro);
+  letter-spacing: 1.6px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.topo h1 {
+  margin: 7px 0 6px;
+  font-size: 36px;
+  letter-spacing: -0.6px;
+  color: #ffffff;
+}
+
+.topo p {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 14px;
+}
+
+.logo-dourada-canto {
+  width: 190px;
+  max-width: 30%;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.98;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.22));
+}
+
+main {
+  margin-top: 26px;
+}
+
+.menu {
+  width: 100%;
+  padding: 8px;
+  gap: 7px;
+  border: 1px solid rgba(13, 24, 48, 0.09);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.90);
+  box-shadow: 0 8px 22px rgba(13, 24, 48, 0.06);
+}
+
+.menu button,
+.menu a {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 12px 17px;
+  color: #465468;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.menu button:hover,
+.menu a:hover {
+  background: #f5f2e9;
+  color: var(--azul-escuro);
+  border-color: rgba(211, 180, 111, 0.34);
+}
+
+.menu button.ativo,
+.menu a.ativo {
+  background: linear-gradient(135deg, #101d36 0%, #1d3558 100%);
+  color: #fff;
+  border-color: rgba(211, 180, 111, 0.48);
+  box-shadow: 0 6px 16px rgba(13, 24, 48, 0.18);
+}
+
+.tela {
+  border-radius: 18px;
+  border: 1px solid rgba(13, 24, 48, 0.08);
+  box-shadow: var(--sombra-altius);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.titulo-secao {
+  border-bottom-color: rgba(211, 180, 111, 0.30);
+}
+
+.titulo-secao h2 {
+  color: var(--azul-escuro);
+  letter-spacing: -0.25px;
+}
+
+.subtitulo {
+  color: #a78643;
+  letter-spacing: 1.15px;
+}
+
+.numero-etapa {
+  background: linear-gradient(135deg, #f5ecd4, #e5cf93);
+  color: var(--azul-escuro);
+  border: 1px solid rgba(211, 180, 111, 0.34);
+  box-shadow: 0 6px 16px rgba(211, 180, 111, 0.17);
+}
+
+label {
+  color: #243650;
+}
+
+input,
+select {
+  border-radius: 10px;
+  border-color: #d2d9e2;
+  background: #fbfcfe;
+}
+
+input:focus,
+select:focus {
+  border-color: #bc9b54;
+  box-shadow: 0 0 0 3px rgba(211, 180, 111, 0.16);
+}
+
+.salvar {
+  border-radius: 10px;
+  background: linear-gradient(135deg, #101e38 0%, #223d63 100%);
+  border: 1px solid rgba(211, 180, 111, 0.34);
+  box-shadow: 0 7px 17px rgba(13, 24, 48, 0.17);
+}
+
+.salvar:hover {
+  background: linear-gradient(135deg, #172a4a 0%, #2b4c76 100%);
+  transform: translateY(-1px);
+}
+
+.painel-ajuda {
+  background:
+    linear-gradient(180deg, rgba(248, 246, 239, 0.76), rgba(247, 249, 252, 0.94));
+  border-color: rgba(211, 180, 111, 0.30);
+  border-radius: 14px;
+}
+
+.painel-ajuda h3 {
+  color: var(--azul-escuro);
+}
+
+.item-ajuda span {
+  background: var(--azul-escuro);
+  color: var(--dourado-claro);
+  box-shadow: inset 0 0 0 1px rgba(211, 180, 111, 0.22);
+}
+
+.pesquisa-reservas,
+.calendario-reservas {
+  border-color: rgba(13, 24, 48, 0.09);
+  background: linear-gradient(180deg, #fafbfd 0%, #f7f9fb 100%);
+  border-radius: 14px;
+}
+
+.calendario-reservas {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.75);
+}
+
+.navegacao-calendario strong {
+  color: var(--azul-escuro);
+}
+
+.navegacao-calendario button {
+  border-color: rgba(13, 24, 48, 0.16);
+  color: var(--azul-escuro);
+  border-radius: 9px;
+}
+
+.navegacao-calendario button:hover {
+  background: #f5f0e4;
+  border-color: rgba(211, 180, 111, 0.45);
+}
+
+.dia-calendario {
+  border-radius: 9px;
+}
+
+.dia-calendario.hoje {
+  box-shadow: inset 0 0 0 2px #b89650;
+}
+
+.sigla-canal {
+  border-color: rgba(211, 180, 111, 0.65);
+  color: var(--azul-escuro);
+  box-shadow: 0 2px 6px rgba(13, 24, 48, 0.08);
+}
+
+.tabela {
+  border-radius: 13px;
+  border-color: rgba(13, 24, 48, 0.10);
+  overflow: hidden;
+}
+
+th {
+  background: linear-gradient(135deg, #111f38 0%, #1b3355 100%);
+  color: #f8f4e9;
+  border-bottom-color: rgba(211, 180, 111, 0.25);
+}
+
+tbody tr:hover {
+  background: #faf8f2;
+}
+
+td a {
+  color: #8e6e2e;
+}
+
+.excluir {
+  border-radius: 8px;
+}
+
+.sugestoes-hospede {
+  border-color: rgba(13, 24, 48, 0.14);
+  box-shadow: 0 12px 28px rgba(13, 24, 48, 0.12);
+}
+
+.sugestao-hospede:hover {
+  background: #f7f3e9;
+}
+
+.resultado-hospede-topo h3 {
+  color: var(--azul-escuro);
+}
+
+.reserva-hospede-card,
+.apartamento-disponivel {
+  border-radius: 12px;
+  box-shadow: 0 5px 14px rgba(13, 24, 48, 0.04);
+}
+
+.reserva-hospede-card {
+  border-color: rgba(13, 24, 48, 0.10);
+}
+
+.reserva-hospede-card button {
+  border-color: rgba(211, 180, 111, 0.40);
+  background: #f7f3e9;
+  color: var(--azul-escuro);
+}
+
+.modal-fundo {
+  background: rgba(7, 15, 30, 0.68);
+}
+
+.modal-conteudo {
+  border: 1px solid rgba(211, 180, 111, 0.24);
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(7, 15, 30, 0.32);
+}
+
+.modal-conteudo h3 {
+  color: var(--azul-escuro);
+}
+
+.modal-fechar {
+  background: #f4f0e5;
+  color: var(--azul-escuro);
+}
+
+.modal-link,
+.voltar {
+  color: #8e6e2e;
+}
+
+footer {
+  border-top-color: rgba(211, 180, 111, 0.28);
+  color: #7b8490;
+}
+
+.rodape-marca {
+  color: #9f7e38;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+}
+
+@media (max-width: 650px) {
+  .topo-conteudo {
+    padding: 24px 0;
+  }
+
+  .marca {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .logo-dourada-canto {
+    width: 155px;
+    max-width: 70%;
+  }
+
+  .topo h1 {
+    font-size: 30px;
+  }
+}
