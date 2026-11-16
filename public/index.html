@@ -144,6 +144,39 @@
         <span class="numero-etapa">02</span>
       </div>
 
+      <div class="calendario-reservas">
+        <div class="calendario-topo">
+          <div class="filtro-calendario">
+            <label for="apartamentoCalendario">Apartamento</label>
+            <select id="apartamentoCalendario">
+              <option value="">Carregando apartamentos...</option>
+            </select>
+          </div>
+
+          <div class="navegacao-calendario">
+            <button id="mesAnterior" type="button" aria-label="Mês anterior">‹</button>
+            <strong id="tituloMesCalendario">Calendário</strong>
+            <button id="mesSeguinte" type="button" aria-label="Próximo mês">›</button>
+          </div>
+        </div>
+
+        <div class="legenda-calendario">
+          <span><i class="legenda-cor livre"></i> Livre</span>
+          <span><i class="legenda-cor ocupado"></i> Reservado</span>
+        </div>
+
+        <div class="calendario-area">
+          <div id="calendario" class="calendario-grade"></div>
+        </div>
+      </div>
+
+      <div class="cabecalho-lista">
+        <div>
+          <h3>Lista de reservas</h3>
+          <p>Veja os dados completos das reservas cadastradas.</p>
+        </div>
+      </div>
+
       <div class="tabela">
         <table>
           <thead>
