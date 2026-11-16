@@ -21,6 +21,7 @@ const mesAnterior = document.getElementById('mesAnterior');
 const mesSeguinte = document.getElementById('mesSeguinte');
 const pesquisaHospede = document.getElementById('pesquisaHospede');
 const sugestoesHospede = document.getElementById('sugestoesHospede');
+const resultadoPesquisaHospede = document.getElementById('resultadoPesquisaHospede');
 
 const formDisponibilidade = document.getElementById('formDisponibilidade');
 const consultaEntrada = document.getElementById('consultaEntrada');
@@ -416,37 +417,9 @@ function renderizarSugestoesHospede(texto) {
     botao.addEventListener('click', function () {
       pesquisaHospede.value = nome;
       renderizarTabelaReservas(nome);
+      renderizarReservasHospede(nome);
       sugestoesHospede.innerHTML = '';
       sugestoesHospede.classList.remove('aberto');
-
-      let reservaSelecionada = null;
-
-      for (let j = 0; j < reservas.length; j++) {
-        if (reservas[j].hospede === nome) {
-          reservaSelecionada = reservas[j];
-          break;
-        }
-      }
-
-      if (reservaSelecionada) {
-        apartamentoCalendario.value = reservaSelecionada.apartamentoId;
-
-        const partesData = reservaSelecionada.entrada.split('-');
-        const anoReserva = Number(partesData[0]);
-        const mesReserva = Number(partesData[1]) - 1;
-
-        dataCalendario = new Date(anoReserva, mesReserva, 1);
-        renderizarCalendario();
-
-        setTimeout(function () {
-          calendario.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center'
-          });
-
-          mostrarDetalhesReserva(reservaSelecionada.id);
-        }, 100);
-      }
     });
 
     sugestoesHospede.appendChild(botao);
@@ -455,9 +428,97 @@ function renderizarSugestoesHospede(texto) {
   sugestoesHospede.classList.add('aberto');
 }
 
+function renderizarReservasHospede(nome) {
+  const reservasDoHospede = [];
+
+  for (let i = 0; i < reservas.length; i++) {
+    if (normalizarTexto(reservas[i].hospede) === normalizarTexto(nome)) {
+      reservasDoHospede.push(reservas[i]);
+    }
+  }
+
+  reservasDoHospede.sort(function (a, b) {
+    return a.entrada.localeCompare(b.entrada);
+  });
+
+  if (reservasDoHospede.length === 0) {
+    resultadoPesquisaHospede.innerHTML = '';
+    return;
+  }
+
+  let html = `
+    <div class="resultado-hospede-topo">
+      <div>
+        <span class="subtitulo">Resultado da pesquisa</span>
+        <h3>Reservas de ${nome}</h3>
+      </div>
+      <strong>${reservasDoHospede.length} reserva(s)</strong>
+    </div>
+
+    <div class="reservas-hospede-grid">
+  `;
+
+  for (let i = 0; i < reservasDoHospede.length; i++) {
+    const reserva = reservasDoHospede[i];
+
+    html += `
+      <div class="reserva-hospede-card">
+        <div class="reserva-hospede-datas">
+          <strong>${formatarData(reserva.entrada)}</strong>
+          <span>até ${formatarData(reserva.saida)}</span>
+        </div>
+
+        <p><strong>${nomeDoApartamento(reserva.apartamentoId)}</strong></p>
+        <p>Canal: ${reserva.canal}</p>
+
+        <button type="button" onclick="irParaReservaNoCalendario(${reserva.id})">
+          Ver no calendário
+        </button>
+      </div>
+    `;
+  }
+
+  html += '</div>';
+  resultadoPesquisaHospede.innerHTML = html;
+}
+
+function irParaReservaNoCalendario(id) {
+  let reservaSelecionada = null;
+
+  for (let i = 0; i < reservas.length; i++) {
+    if (reservas[i].id === id) {
+      reservaSelecionada = reservas[i];
+      break;
+    }
+  }
+
+  if (!reservaSelecionada) {
+    return;
+  }
+
+  apartamentoCalendario.value = reservaSelecionada.apartamentoId;
+
+  const partesData = reservaSelecionada.entrada.split('-');
+  const anoReserva = Number(partesData[0]);
+  const mesReserva = Number(partesData[1]) - 1;
+
+  dataCalendario = new Date(anoReserva, mesReserva, 1);
+  renderizarCalendario();
+
+  setTimeout(function () {
+    calendario.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    });
+
+    mostrarDetalhesReserva(reservaSelecionada.id);
+  }, 100);
+}
+
 pesquisaHospede.addEventListener('input', function () {
   renderizarTabelaReservas(pesquisaHospede.value);
   renderizarSugestoesHospede(pesquisaHospede.value);
+  resultadoPesquisaHospede.innerHTML = '';
 });
 
 pesquisaHospede.addEventListener('focus', function () {
@@ -593,6 +654,7 @@ formDisponibilidade.addEventListener('submit', async function (evento) {
 });
 
 window.mostrarDetalhesReserva = mostrarDetalhesReserva;
+window.irParaReservaNoCalendario = irParaReservaNoCalendario;
 
 formulario.addEventListener('submit', async function (evento) {
   evento.preventDefault();
