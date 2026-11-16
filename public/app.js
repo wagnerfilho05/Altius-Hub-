@@ -20,6 +20,7 @@ const tituloMesCalendario = document.getElementById('tituloMesCalendario');
 const mesAnterior = document.getElementById('mesAnterior');
 const mesSeguinte = document.getElementById('mesSeguinte');
 const pesquisaHospede = document.getElementById('pesquisaHospede');
+const sugestoesHospede = document.getElementById('sugestoesHospede');
 
 const formDisponibilidade = document.getElementById('formDisponibilidade');
 const consultaEntrada = document.getElementById('consultaEntrada');
@@ -342,8 +343,107 @@ async function carregarReservas() {
   }
 }
 
+function normalizarTexto(texto) {
+  return texto
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
+function obterNomesHospedes() {
+  const nomes = [];
+
+  for (let i = 0; i < reservas.length; i++) {
+    const nome = reservas[i].hospede;
+
+    if (!nomes.includes(nome)) {
+      nomes.push(nome);
+    }
+  }
+
+  return nomes;
+}
+
+function renderizarSugestoesHospede(texto) {
+  const termo = normalizarTexto((texto || '').trim());
+
+  if (termo === '') {
+    sugestoesHospede.innerHTML = '';
+    sugestoesHospede.classList.remove('aberto');
+    return;
+  }
+
+  const nomes = obterNomesHospedes();
+  const comeco = [];
+  const contem = [];
+
+  for (let i = 0; i < nomes.length; i++) {
+    const nomeNormalizado = normalizarTexto(nomes[i]);
+
+    if (nomeNormalizado.startsWith(termo)) {
+      comeco.push(nomes[i]);
+    } else if (nomeNormalizado.includes(termo)) {
+      contem.push(nomes[i]);
+    }
+  }
+
+  comeco.sort(function (a, b) {
+    return a.localeCompare(b, 'pt-BR');
+  });
+
+  contem.sort(function (a, b) {
+    return a.localeCompare(b, 'pt-BR');
+  });
+
+  const resultados = comeco.concat(contem).slice(0, 6);
+
+  if (resultados.length === 0) {
+    sugestoesHospede.innerHTML = '<div class="sugestao-vazia">Nenhum hóspede encontrado</div>';
+    sugestoesHospede.classList.add('aberto');
+    return;
+  }
+
+  sugestoesHospede.innerHTML = '';
+
+  for (let i = 0; i < resultados.length; i++) {
+    const nome = resultados[i];
+    const botao = document.createElement('button');
+
+    botao.type = 'button';
+    botao.className = 'sugestao-hospede';
+    botao.textContent = nome;
+
+    botao.addEventListener('click', function () {
+      pesquisaHospede.value = nome;
+      renderizarTabelaReservas(nome);
+      sugestoesHospede.innerHTML = '';
+      sugestoesHospede.classList.remove('aberto');
+    });
+
+    sugestoesHospede.appendChild(botao);
+  }
+
+  sugestoesHospede.classList.add('aberto');
+}
+
 pesquisaHospede.addEventListener('input', function () {
   renderizarTabelaReservas(pesquisaHospede.value);
+  renderizarSugestoesHospede(pesquisaHospede.value);
+});
+
+pesquisaHospede.addEventListener('focus', function () {
+  if (pesquisaHospede.value.trim() !== '') {
+    renderizarSugestoesHospede(pesquisaHospede.value);
+  }
+});
+
+document.addEventListener('click', function (evento) {
+  if (
+    evento.target !== pesquisaHospede &&
+    !sugestoesHospede.contains(evento.target)
+  ) {
+    sugestoesHospede.classList.remove('aberto');
+  }
 });
 
 function mostrarDetalhesReserva(id) {
