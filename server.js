@@ -15,58 +15,6 @@ function salvarBanco(banco) {
   fs.writeFileSync(arquivoBanco, JSON.stringify(banco, null, 2));
 }
 
-function dataAtualBrasil() {
-  const partes = new Intl.DateTimeFormat('pt-BR', {
-    timeZone: 'America/Fortaleza',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit'
-  }).formatToParts(new Date());
-
-  let dia = '';
-  let mes = '';
-  let ano = '';
-
-  for (let i = 0; i < partes.length; i++) {
-    if (partes[i].type === 'day') {
-      dia = partes[i].value;
-    }
-
-    if (partes[i].type === 'month') {
-      mes = partes[i].value;
-    }
-
-    if (partes[i].type === 'year') {
-      ano = partes[i].value;
-    }
-  }
-
-  return ano + '-' + mes + '-' + dia;
-}
-
-function limparReservasPassadas(banco) {
-  const hoje = dataAtualBrasil();
-  const reservasAtivas = [];
-
-  for (let i = 0; i < banco.reservas.length; i++) {
-    if (banco.reservas[i].saida >= hoje) {
-      reservasAtivas.push(banco.reservas[i]);
-    }
-  }
-
-  if (reservasAtivas.length !== banco.reservas.length) {
-    banco.reservas = reservasAtivas;
-    salvarBanco(banco);
-  }
-
-  return banco;
-}
-
-function lerBancoAtualizado() {
-  const banco = lerBanco();
-  return limparReservasPassadas(banco);
-}
-
 function responderJson(res, status, dados) {
   res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8' });
   res.end(JSON.stringify(dados));
@@ -85,7 +33,11 @@ function lerCorpo(req, callback) {
       return;
     }
 
-    callback(JSON.parse(corpo));
+    try {
+      callback(JSON.parse(corpo));
+    } catch (erro) {
+      callback({});
+    }
   });
 }
 
@@ -101,17 +53,9 @@ function enviarArquivo(res, nomeArquivo) {
 
     let tipo = 'text/html';
 
-    if (nomeArquivo.endsWith('.css')) {
-      tipo = 'text/css';
-    }
-
-    if (nomeArquivo.endsWith('.js')) {
-      tipo = 'application/javascript';
-    }
-
-    if (nomeArquivo.endsWith('.svg')) {
-      tipo = 'image/svg+xml';
-    }
+    if (nomeArquivo.endsWith('.css')) tipo = 'text/css';
+    if (nomeArquivo.endsWith('.js')) tipo = 'application/javascript';
+    if (nomeArquivo.endsWith('.svg')) tipo = 'image/svg+xml';
 
     res.writeHead(200, {
       'Content-Type': tipo + '; charset=utf-8',
@@ -119,8 +63,93 @@ function enviarArquivo(res, nomeArquivo) {
       'Pragma': 'no-cache',
       'Expires': '0'
     });
+
     res.end(arquivo);
   });
+}
+
+function proximoId(lista) {
+  let maior = 0;
+
+  for (let i = 0; i < lista.length; i++) {
+    if (lista[i].id > maior) maior = lista[i].id;
+  }
+
+  return maior + 1;
+}
+
+function validarApartamento(banco, dados, ignorarId) {
+  const empreendimento = String(dados.empreendimento || '').trim();
+  const numero = String(dados.numero || '').trim();
+
+  if (!empreendimento || !numero || !dados.localizacao || !dados.checkin || !dados.checkout) {
+    return { erro: 'Preencha todos os campos do flat.' };
+  }
+
+  for (let i = 0; i < banco.apartamentos.length; i++) {
+    const apartamento = banco.apartamentos[i];
+
+    if (
+      apartamento.id !== ignorarId &&
+      apartamento.empreendimento.toLowerCase() === empreendimento.toLowerCase() &&
+      String(apartamento.numero).toLowerCase() === numero.toLowerCase()
+    ) {
+      return { erro: 'Esse flat já está cadastrado nesse empreendimento.' };
+    }
+  }
+
+  return {
+    empreendimento: empreendimento,
+    numero: numero,
+    localizacao: String(dados.localizacao).trim(),
+    checkin: dados.checkin,
+    checkout: dados.checkout
+  };
+}
+
+function validarReserva(banco, dados, ignorarId) {
+  if (!dados.hospede || !dados.canal || !dados.entrada || !dados.saida || !dados.apartamentoId) {
+    return { erro: 'Preencha todos os campos.' };
+  }
+
+  if (dados.entrada >= dados.saida) {
+    return { erro: 'O check-out precisa ser depois do check-in.' };
+  }
+
+  const apartamentoId = Number(dados.apartamentoId);
+  let existeApartamento = false;
+
+  for (let i = 0; i < banco.apartamentos.length; i++) {
+    if (banco.apartamentos[i].id === apartamentoId) {
+      existeApartamento = true;
+      break;
+    }
+  }
+
+  if (!existeApartamento) {
+    return { erro: 'Apartamento não encontrado.' };
+  }
+
+  for (let i = 0; i < banco.reservas.length; i++) {
+    const reserva = banco.reservas[i];
+
+    if (
+      reserva.id !== ignorarId &&
+      reserva.apartamentoId === apartamentoId &&
+      dados.entrada < reserva.saida &&
+      dados.saida > reserva.entrada
+    ) {
+      return { erro: 'Esse apartamento já está reservado nesse período.' };
+    }
+  }
+
+  return {
+    hospede: String(dados.hospede).trim(),
+    canal: dados.canal,
+    entrada: dados.entrada,
+    saida: dados.saida,
+    apartamentoId: apartamentoId
+  };
 }
 
 const servidor = http.createServer(function (req, res) {
@@ -128,133 +157,156 @@ const servidor = http.createServer(function (req, res) {
   const rota = endereco.pathname;
 
   if (rota === '/api/apartamentos' && req.method === 'GET') {
-    const banco = lerBancoAtualizado();
+    const banco = lerBanco();
     responderJson(res, 200, banco.apartamentos);
     return;
   }
 
   if (rota === '/api/apartamentos' && req.method === 'POST') {
-    lerCorpo(req, function (novoApartamento) {
-      if (
-        !novoApartamento.empreendimento ||
-        !novoApartamento.numero ||
-        !novoApartamento.localizacao ||
-        !novoApartamento.checkin ||
-        !novoApartamento.checkout
-      ) {
-        responderJson(res, 400, { erro: 'Preencha todos os campos do flat.' });
+    lerCorpo(req, function (dados) {
+      const banco = lerBanco();
+      const validacao = validarApartamento(banco, dados, null);
+
+      if (validacao.erro) {
+        responderJson(res, 400, validacao);
         return;
       }
 
-      const banco = lerBancoAtualizado();
-      const empreendimento = novoApartamento.empreendimento.trim();
-      const numero = novoApartamento.numero.trim();
-
-      for (let i = 0; i < banco.apartamentos.length; i++) {
-        const apartamento = banco.apartamentos[i];
-
-        if (
-          apartamento.empreendimento.toLowerCase() === empreendimento.toLowerCase() &&
-          String(apartamento.numero).toLowerCase() === numero.toLowerCase()
-        ) {
-          responderJson(res, 409, { erro: 'Esse flat já está cadastrado nesse empreendimento.' });
-          return;
-        }
-      }
-
-      let novoId = 1;
-
-      for (let i = 0; i < banco.apartamentos.length; i++) {
-        if (banco.apartamentos[i].id >= novoId) {
-          novoId = banco.apartamentos[i].id + 1;
-        }
-      }
-
-      const apartamentoSalvo = {
-        id: novoId,
-        empreendimento: empreendimento,
-        numero: numero,
-        nome: empreendimento + ' — Apto ' + numero,
-        localizacao: novoApartamento.localizacao.trim(),
-        checkin: novoApartamento.checkin,
-        checkout: novoApartamento.checkout
+      const apartamento = {
+        id: proximoId(banco.apartamentos),
+        empreendimento: validacao.empreendimento,
+        numero: validacao.numero,
+        nome: validacao.empreendimento + ' — Apto ' + validacao.numero,
+        localizacao: validacao.localizacao,
+        checkin: validacao.checkin,
+        checkout: validacao.checkout
       };
 
-      banco.apartamentos.push(apartamentoSalvo);
+      banco.apartamentos.push(apartamento);
       salvarBanco(banco);
-      responderJson(res, 201, apartamentoSalvo);
+      responderJson(res, 201, apartamento);
     });
+    return;
+  }
 
+  if (rota.startsWith('/api/apartamentos/') && req.method === 'PUT') {
+    const id = Number(rota.split('/')[3]);
+
+    lerCorpo(req, function (dados) {
+      const banco = lerBanco();
+      const validacao = validarApartamento(banco, dados, id);
+
+      if (validacao.erro) {
+        responderJson(res, 400, validacao);
+        return;
+      }
+
+      let encontrado = false;
+
+      for (let i = 0; i < banco.apartamentos.length; i++) {
+        if (banco.apartamentos[i].id === id) {
+          banco.apartamentos[i].empreendimento = validacao.empreendimento;
+          banco.apartamentos[i].numero = validacao.numero;
+          banco.apartamentos[i].nome = validacao.empreendimento + ' — Apto ' + validacao.numero;
+          banco.apartamentos[i].localizacao = validacao.localizacao;
+          banco.apartamentos[i].checkin = validacao.checkin;
+          banco.apartamentos[i].checkout = validacao.checkout;
+          encontrado = true;
+          break;
+        }
+      }
+
+      if (!encontrado) {
+        responderJson(res, 404, { erro: 'Flat não encontrado.' });
+        return;
+      }
+
+      salvarBanco(banco);
+      responderJson(res, 200, { mensagem: 'Flat atualizado.' });
+    });
     return;
   }
 
   if (rota === '/api/reservas' && req.method === 'GET') {
-    const banco = lerBancoAtualizado();
+    const banco = lerBanco();
     responderJson(res, 200, banco.reservas);
     return;
   }
 
   if (rota === '/api/reservas' && req.method === 'POST') {
-    lerCorpo(req, function (novaReserva) {
-      if (!novaReserva.hospede || !novaReserva.canal || !novaReserva.entrada || !novaReserva.saida || !novaReserva.apartamentoId) {
-        responderJson(res, 400, { erro: 'Preencha todos os campos.' });
+    lerCorpo(req, function (dados) {
+      const banco = lerBanco();
+      const validacao = validarReserva(banco, dados, null);
+
+      if (validacao.erro) {
+        responderJson(res, 409, validacao);
         return;
       }
 
-      if (novaReserva.entrada >= novaReserva.saida) {
-        responderJson(res, 400, { erro: 'O check-out precisa ser depois do check-in.' });
-        return;
-      }
-
-      const banco = lerBancoAtualizado();
-      const apartamentoId = Number(novaReserva.apartamentoId);
-
-      for (let i = 0; i < banco.reservas.length; i++) {
-        const reserva = banco.reservas[i];
-
-        if (reserva.apartamentoId === apartamentoId) {
-          const conflito = novaReserva.entrada < reserva.saida && novaReserva.saida > reserva.entrada;
-
-          if (conflito) {
-            responderJson(res, 409, { erro: 'Esse apartamento já está reservado nesse período.' });
-            return;
-          }
-        }
-      }
-
-      let novoId = 1;
-
-      if (banco.reservas.length > 0) {
-        novoId = banco.reservas[banco.reservas.length - 1].id + 1;
-      }
-
-      const reservaSalva = {
-        id: novoId,
-        hospede: novaReserva.hospede,
-        canal: novaReserva.canal,
-        entrada: novaReserva.entrada,
-        saida: novaReserva.saida,
-        apartamentoId: apartamentoId,
+      const reserva = {
+        id: proximoId(banco.reservas),
+        hospede: validacao.hospede,
+        canal: validacao.canal,
+        entrada: validacao.entrada,
+        saida: validacao.saida,
+        apartamentoId: validacao.apartamentoId,
         status: 'Confirmada'
       };
 
-      banco.reservas.push(reservaSalva);
+      banco.reservas.push(reserva);
       salvarBanco(banco);
-      responderJson(res, 201, reservaSalva);
+      responderJson(res, 201, reserva);
     });
+    return;
+  }
 
+  if (rota.startsWith('/api/reservas/') && req.method === 'PUT') {
+    const id = Number(rota.split('/')[3]);
+
+    lerCorpo(req, function (dados) {
+      const banco = lerBanco();
+      const validacao = validarReserva(banco, dados, id);
+
+      if (validacao.erro) {
+        responderJson(res, 409, validacao);
+        return;
+      }
+
+      let encontrado = false;
+
+      for (let i = 0; i < banco.reservas.length; i++) {
+        if (banco.reservas[i].id === id) {
+          banco.reservas[i].hospede = validacao.hospede;
+          banco.reservas[i].canal = validacao.canal;
+          banco.reservas[i].entrada = validacao.entrada;
+          banco.reservas[i].saida = validacao.saida;
+          banco.reservas[i].apartamentoId = validacao.apartamentoId;
+          encontrado = true;
+          break;
+        }
+      }
+
+      if (!encontrado) {
+        responderJson(res, 404, { erro: 'Reserva não encontrada.' });
+        return;
+      }
+
+      salvarBanco(banco);
+      responderJson(res, 200, { mensagem: 'Reserva atualizada.' });
+    });
     return;
   }
 
   if (rota.startsWith('/api/reservas/') && req.method === 'GET') {
     const id = Number(rota.split('/')[3]);
-    const banco = lerBancoAtualizado();
+    const banco = lerBanco();
     let reservaEncontrada = null;
     let apartamentoEncontrado = null;
 
     for (let i = 0; i < banco.reservas.length; i++) {
       if (banco.reservas[i].id === id) {
         reservaEncontrada = banco.reservas[i];
+        break;
       }
     }
 
@@ -266,6 +318,7 @@ const servidor = http.createServer(function (req, res) {
     for (let i = 0; i < banco.apartamentos.length; i++) {
       if (banco.apartamentos[i].id === reservaEncontrada.apartamentoId) {
         apartamentoEncontrado = banco.apartamentos[i];
+        break;
       }
     }
 
@@ -284,13 +337,14 @@ const servidor = http.createServer(function (req, res) {
 
   if (rota.startsWith('/api/reservas/') && req.method === 'DELETE') {
     const id = Number(rota.split('/')[3]);
-    const banco = lerBancoAtualizado();
-    const novasReservas = [];
+    const banco = lerBanco();
+    const novasReservas = banco.reservas.filter(function (reserva) {
+      return reserva.id !== id;
+    });
 
-    for (let i = 0; i < banco.reservas.length; i++) {
-      if (banco.reservas[i].id !== id) {
-        novasReservas.push(banco.reservas[i]);
-      }
+    if (novasReservas.length === banco.reservas.length) {
+      responderJson(res, 404, { erro: 'Reserva não encontrada.' });
+      return;
     }
 
     banco.reservas = novasReservas;
@@ -299,12 +353,7 @@ const servidor = http.createServer(function (req, res) {
     return;
   }
 
-  if (rota === '/') {
-    enviarArquivo(res, 'index.html');
-    return;
-  }
-
-  if (rota === '/index.html') {
+  if (rota === '/' || rota === '/index.html') {
     enviarArquivo(res, 'index.html');
     return;
   }
