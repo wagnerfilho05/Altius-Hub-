@@ -1937,16 +1937,22 @@ button.dia-calendario {
 }
 
 .indicador-icone {
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
-  color: var(--dourado);
-  background: #111f38;
-  font-weight: bold;
+  border-radius: 18px;
+  color: #d7b86f;
+  background: linear-gradient(145deg, #0d1830 0%, #162846 100%);
+  border: 1px solid rgba(215, 184, 111, 0.48);
+  font-weight: 800;
+  font-size: 28px;
+  line-height: 1;
+  box-shadow:
+    0 6px 16px rgba(13, 24, 48, 0.12),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02);
 }
 
 .indicador-dashboard strong,
