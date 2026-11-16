@@ -65,7 +65,7 @@ Caso exista conflito, o cadastro não é realizado e o sistema mostra uma mensag
 
 ## Validação com usuários
 
-Após a publicação do MVP, o sistema foi disponibilizado para 5 pessoas realizarem um teste de uso.
+Após a publicação do MVP, o sistema foi disponibilizado para 7 pessoas realizarem um teste de uso.
 
 Os participantes testaram o cadastro de reserva, consulta das informações e a validação de conflito de datas. Depois do teste, responderam um formulário de avaliação.
 
@@ -75,8 +75,8 @@ Os participantes testaram o cadastro de reserva, consulta das informações e a 
 - 100% consideraram fácil identificar o apartamento e as datas da hospedagem;
 - 100% consideraram clara a mensagem de conflito de datas;
 - 100% responderam que o sistema facilita a organização das reservas em diferentes canais;
-- Todos os 5 participantes deram nota 5 de 5 para a facilidade de utilização;
-- 4 dos 5 participantes responderam que utilizariam uma ferramenta desse tipo para organizar reservas.
+- Todos os 7 participantes deram nota 5 de 5 para a facilidade de utilização;
+- 6 dos 7 participantes (85,7%) responderam que utilizariam uma ferramenta desse tipo para organizar reservas.
 
 ## Formulário de avaliação
 
@@ -91,6 +91,8 @@ Entre as sugestões dos participantes apareceram:
 - Criar um calendário mostrando os dias ocupados e disponíveis;
 - Adicionar filtros por apartamento e por data;
 - Criar uma busca pelo nome do hóspede;
+- Organizar as reservas por data;
+- Diferenciar visualmente reservas atuais, futuras e encerradas;
 - Continuar evoluindo a centralização das reservas.
 
 Essas sugestões podem ser utilizadas em versões futuras do projeto.
@@ -125,6 +127,7 @@ http://localhost:3000
 - Criar tela de cadastro de apartamentos;
 - Criar sistema de login;
 - Permitir edição das reservas;
+- Organizar reservas por status e data;
 - Integrar com Airbnb e Booking.
 
 ## Observação
