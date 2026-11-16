@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Altius Hub</title>
-  <link rel="stylesheet" href="style.css?v=20261116-7">
+  <link rel="stylesheet" href="style.css?v=20261116-8">
 </head>
 <body>
   <header class="topo">
@@ -41,21 +41,36 @@
 
       <div class="dashboard-indicadores">
         <div class="indicador-dashboard">
-          <span class="indicador-icone">↓</span>
+          <span class="indicador-icone" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 4v14"></path>
+              <path d="M6.5 12.5 12 18l5.5-5.5"></path>
+            </svg>
+          </span>
           <div>
             <strong id="totalCheckinsHoje">0</strong>
             <span>Check-ins hoje</span>
           </div>
         </div>
         <div class="indicador-dashboard">
-          <span class="indicador-icone">↑</span>
+          <span class="indicador-icone" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 20V6"></path>
+              <path d="M6.5 11.5 12 6l5.5 5.5"></path>
+            </svg>
+          </span>
           <div>
             <strong id="totalCheckoutsHoje">0</strong>
             <span>Check-outs hoje</span>
           </div>
         </div>
         <div class="indicador-dashboard">
-          <span class="indicador-icone">✕</span>
+          <span class="indicador-icone" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M7 7l10 10"></path>
+              <path d="M17 7 7 17"></path>
+            </svg>
+          </span>
           <div>
             <strong id="totalOcupadosHoje">0</strong>
             <span>Flats ocupados</span>
